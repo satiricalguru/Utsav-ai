@@ -1,39 +1,71 @@
+@font-face {
+  font-family: "Cormorant Garamond";
+  src: url("/assets/fonts/cormorant-garamond.woff2") format("woff2");
+  font-weight: 300 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Cormorant Garamond";
+  src: url("/assets/fonts/cormorant-garamond-italic.woff2") format("woff2");
+  font-weight: 300 700;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Pinyon Script";
+  src: url("/assets/fonts/pinyon-script.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+
+/* Palette after the Amrit Palace reference: parchment canvas, one saffron
+   moment, warm-onyx type; the hero and closing band sit on a warm night. */
 :root {
-  --bg: #fbf7f2;
-  --surface: #ffffff;
-  --surface-2: #f5ede4;
-  --text: #241a16;
-  --muted: #5e514a;
-  --border: #e3d6c8;
-  --primary: #7a1f3d;
-  --primary-hover: #611630;
+  --bg: #f6efe4;
+  --surface: #fffaf3;
+  --surface-2: #efe4d3;
+  --text: #2c2622;
+  --muted: #645a51;
+  --border: #e0d2bd;
+  --primary: #6e1a37;
+  --primary-hover: #55122a;
   --on-primary: #ffffff;
-  --accent: #b8860b;
+  --accent: #b5651d;
+  --saffron: #d49653;
+  --marigold: #f2b544;
+  --night: #17110f;
+  --night-2: #241a16;
+  --on-night: #f6ece0;
+  --on-night-muted: #cdbcab;
   --focus: #1a5fb4;
   --ok: #1e6b3a;
-  --ok-bg: #e4f3e8;
+  --ok-bg: #e2f1e5;
   --warn: #8a4b00;
-  --warn-bg: #fff1dc;
+  --warn-bg: #fbecd2;
   --danger: #a1122a;
-  --danger-bg: #fde7ea;
-  --radius: 14px;
-  --shadow: 0 1px 2px rgb(36 26 22 / 6%), 0 6px 24px rgb(36 26 22 / 6%);
+  --danger-bg: #fbe4e7;
+  --radius: 18px;
+  --shadow: 0 1px 2px rgb(44 38 34 / 6%), 0 12px 40px rgb(44 38 34 / 8%);
   --font: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", "Noto Sans Devanagari", sans-serif;
+  --font-display: "Cormorant Garamond", "Iowan Old Style", Georgia, serif;
+  --font-script: "Pinyon Script", "Snell Roundhand", cursive;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   color-scheme: light;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --bg: #17110f;
-    --surface: #221a17;
-    --surface-2: #2d2320;
-    --text: #f6ece4;
-    --muted: #c7b6aa;
-    --border: #45362f;
-    --primary: #f08aa9;
-    --primary-hover: #f6a8c0;
-    --on-primary: #2a0b15;
-    --accent: #f2c14e;
+    --surface: #211915;
+    --surface-2: #2c221d;
+    --text: #f4ebe0;
+    --muted: #c2b2a3;
+    --border: #3d2f27;
+    --primary: #f2b46a;
+    --primary-hover: #f7c78c;
+    --on-primary: #241405;
+    --accent: #f2b46a;
     --focus: #8cb8ff;
     --ok: #8fe0a8;
     --ok-bg: #173523;
@@ -108,10 +140,11 @@ main:focus { outline: none; }
   margin-bottom: 20px;
 }
 
-h1, h2, h3 { line-height: 1.2; margin: 0 0 8px; }
-h1 { font-size: clamp(1.6rem, 4vw, 2.2rem); }
-h2 { font-size: clamp(1.35rem, 3vw, 1.8rem); }
-h3 { font-size: 1.1rem; }
+h1, h2, h3 { line-height: 1.15; margin: 0 0 8px; font-family: var(--font-display); font-weight: 500; letter-spacing: -0.01em; }
+h3 { font-weight: 600; }
+h1 { font-size: clamp(2rem, 5vw, 2.8rem); }
+h2 { font-size: clamp(1.7rem, 4vw, 2.4rem); }
+h3 { font-size: 1.3rem; }
 .lede { color: var(--muted); margin: 0 0 16px; max-width: 70ch; }
 .eyebrow { text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.8rem; color: var(--muted); margin: 0 0 6px; font-weight: 600; }
 

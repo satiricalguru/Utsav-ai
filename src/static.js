@@ -10,6 +10,9 @@ const MIME = {
   '.json': 'application/json; charset=utf-8',
   '.svg': 'image/svg+xml',
   '.png': 'image/png',
+  '.webp': 'image/webp',
+  '.jpg': 'image/jpeg',
+  '.woff2': 'font/woff2',
   '.ico': 'image/x-icon',
   '.webmanifest': 'application/manifest+json',
   '.txt': 'text/plain; charset=utf-8',
@@ -53,14 +56,24 @@ export async function loadStaticAssets(root) {
       br: compress ? brotliCompressSync(body) : undefined,
       type,
       etag: `"${createHash('sha1').update(body).digest('base64url')}"`,
-      // HTML must revalidate so deploys show up at once; other assets are
-      // revalidated cheaply through the ETag.
-      cacheControl: ext === '.html' ? 'no-cache' : 'public, max-age=3600, must-revalidate',
+      cacheControl: cacheControlFor(urlPath),
     });
   }
   const index = assets.get('/index.html');
   if (index) assets.set('/', index);
   return assets;
+}
+
+/**
+ * Fonts and photos under /assets/ never change in place (a changed file gets
+ * a new name), so browsers may keep them for a week. HTML, CSS and JS are not
+ * content-hashed, so they always revalidate through the ETag (a cheap 304);
+ * otherwise a deploy could pair new HTML with stale cached styles or scripts.
+ * @param {string} urlPath
+ */
+export function cacheControlFor(urlPath) {
+  if (urlPath.startsWith('/assets/')) return 'public, max-age=604800, immutable';
+  return 'no-cache';
 }
 
 /**

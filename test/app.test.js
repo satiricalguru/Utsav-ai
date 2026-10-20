@@ -169,3 +169,19 @@ describe('error handling', () => {
     assert.equal(errors[0].error, 'secret stack');
   });
 });
+
+describe('asset caching', () => {
+  it('long-caches fonts and photos, revalidates code', async () => {
+    const font = await fetch(`${base}/assets/fonts/pinyon-script.woff2`);
+    assert.equal(font.status, 200);
+    assert.equal(font.headers.get('content-type'), 'font/woff2');
+    assert.match(font.headers.get('cache-control'), /immutable/);
+    await font.arrayBuffer();
+    const photo = await fetch(`${base}/assets/img/wedding.webp`);
+    assert.equal(photo.headers.get('content-type'), 'image/webp');
+    await photo.arrayBuffer();
+    const js = await fetch(`${base}/js/landing.js`);
+    assert.equal(js.headers.get('cache-control'), 'no-cache');
+    await js.arrayBuffer();
+  });
+});

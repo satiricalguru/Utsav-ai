@@ -100,3 +100,38 @@ describe('calendar export', () => {
     assert.equal(url.searchParams.get('text'), 'Book venue');
   });
 });
+
+const css = await readFile(new URL('../public/landing.css', import.meta.url), 'utf8');
+const gl = await readFile(new URL('../public/js/hero-gl.js', import.meta.url), 'utf8');
+
+describe('landing page', () => {
+  it('has exactly one h1 and hides decorative layers from assistive tech', () => {
+    assert.equal(html.match(/<h1\b/g).length, 1);
+    assert.match(html, /<canvas class="hero-gl" aria-hidden="true">/);
+    assert.match(html, /<div class="marquee" aria-hidden="true">/);
+    assert.match(html, /<div class="story-visual" aria-hidden="true">/);
+  });
+
+  it('gives every image alt text and intrinsic dimensions, lazy-loading photos', () => {
+    const imgs = [...html.matchAll(/<img\b[^>]*>/g)].map((m) => m[0]);
+    assert.ok(imgs.length >= 9);
+    for (const img of imgs) {
+      assert.match(img, /\balt="/, img);
+      assert.match(img, /\bwidth="\d+"/, img);
+      assert.match(img, /\bheight="\d+"/, img);
+    }
+    for (const img of imgs.filter((i) => i.includes('/assets/img/'))) assert.match(img, /loading="lazy"/);
+  });
+
+  it('only links occasion cards to supported event types', () => {
+    const occasions = [...html.matchAll(/data-occasion="([^"]+)"/g)].map((m) => m[1]);
+    assert.deepEqual([...occasions].sort(), [...EVENT_TYPES].sort());
+  });
+
+  it('respects reduced motion in CSS and WebGL', () => {
+    assert.match(css, /@media \(prefers-reduced-motion: reduce\)/);
+    assert.match(css, /@media \(forced-colors: active\)/);
+    assert.match(gl, /reducedMotion/);
+    assert.match(gl, /IntersectionObserver/, 'pauses when off-screen');
+  });
+});
