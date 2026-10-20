@@ -85,7 +85,9 @@ gcloud run deploy utsav-ai --source . --region asia-south1 --allow-unauthenticat
 
 For production, store the key in Secret Manager and use `--set-secrets GEMINI_API_KEY=gemini-key:latest`.
 
-**Any container host** (Render, Railway, Fly.io): build the included `Dockerfile` and set `GEMINI_API_KEY`. The container listens on `$PORT` (default 8080), sets `TRUST_PROXY=1` and shuts down cleanly on SIGTERM.
+**Render (free tier)**: `render.yaml` is a ready Blueprint. In the Render dashboard choose *New → Blueprint*, pick this repository and enter `GEMINI_API_KEY` when prompted.
+
+**Any container host** (Railway, Fly.io): build the included `Dockerfile` and set `GEMINI_API_KEY`. The container listens on `$PORT` (default 8080), sets `TRUST_PROXY=1` and shuts down cleanly on SIGTERM.
 
 ## Project structure
 

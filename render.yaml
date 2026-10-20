@@ -1,0 +1,23 @@
+# Render Blueprint: free Node web service. GEMINI_API_KEY is entered as a
+# secret in the Render dashboard when the Blueprint is first created.
+services:
+  - type: web
+    name: utsav-ai
+    runtime: node
+    plan: free
+    region: singapore
+    buildCommand: npm install --omit=dev
+    startCommand: node server.js
+    healthCheckPath: /api/health
+    autoDeployTrigger: commit
+    envVars:
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: GEMINI_MODEL
+        value: gemini-3.6-flash,gemini-2.5-flash,gemini-3.5-flash
+      - key: NODE_VERSION
+        value: "22"
+      - key: NODE_ENV
+        value: production
+      - key: TRUST_PROXY
+        value: "1"
