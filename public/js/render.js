@@ -222,18 +222,6 @@ function moodSwatches(palette) {
 }
 
 /**
- * Short tip for the sidebar, taken from the AI's own advice.
- * @param {any} plan
- */
-export function sidebarTip(plan) {
-  const tip = plan.ideas.budgetTips?.[0];
-  const risk = plan.ideas.risks?.[0];
-  const text = tip ? tip.tip : risk ? `${risk.risk}: ${risk.mitigation}` : null;
-  if (!text) return null;
-  return [h('p', { class: 'tip-title' }, icon('bulb'), 'Quick tip'), h('p', { ...langAttrs(plan.input.language), text })];
-}
-
-/**
  * @param {any} plan
  */
 export function renderIdeas(plan) {

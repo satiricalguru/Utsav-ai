@@ -2,7 +2,7 @@ import { ApiError, getHealth, postJson } from './api.js';
 import { buildIcs } from './calendar.js';
 import { h, initTabs } from './dom.js';
 import { EVENT_LABELS, daysUntil, formatDate, localToday, planToText } from './format.js';
-import { chatMessage, renderBudget, renderIdeas, renderOverview, renderTimeline, renderVendors, sidebarTip } from './render.js';
+import { chatMessage, renderBudget, renderIdeas, renderOverview, renderTimeline, renderVendors } from './render.js';
 import { loadState, saveState } from './store.js';
 
 const $ = (/** @type {string} */ id) => /** @type {HTMLElement} */ (document.getElementById(id));
@@ -122,10 +122,6 @@ function renderPlan(plan) {
 
   const days = daysUntil(input.date, localToday());
   $('countdown').textContent = days > 1 ? `${days} days to go` : days === 1 ? 'Tomorrow!' : days === 0 ? 'Today is the day!' : 'Celebrated';
-  const tip = sidebarTip(plan);
-  const tipBox = $('dash-tip');
-  tipBox.hidden = !tip;
-  tipBox.replaceChildren(...(tip ?? []));
 
   $('panel-ideas').replaceChildren(...renderIdeas(plan).filter(Boolean));
   renderBudgetPanel();
