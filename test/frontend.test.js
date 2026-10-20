@@ -2,7 +2,8 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { describe, it } from 'node:test';
 import { buildIcs, escapeIcsText, foldLine, googleCalendarUrl } from '../public/js/calendar.js';
-import { CATEGORY_LABELS, EVENT_LABELS, formatDate, formatMoney, planToText, relativeDays } from '../public/js/format.js';
+import { donutSegments } from '../public/js/charts.js';
+import { CATEGORY_COLORS, CATEGORY_LABELS, EVENT_LABELS, daysUntil, formatDate, formatMoney, formatMoneyCompact, formatShortDate, localToday, nextTasks, planToText, relativeDays, taskStatus } from '../public/js/format.js';
 import { BUDGET_CATEGORIES, CURRENCIES, DIETARY, EVENT_TYPES, LANGUAGES, STYLES, VENUE_TYPES } from '../src/constants.js';
 import { createPlannerService } from '../src/service.js';
 import { TODAY, eventInput } from './helpers.js';
@@ -133,5 +134,51 @@ describe('landing page', () => {
     assert.match(css, /@media \(forced-colors: active\)/);
     assert.match(gl, /reducedMotion/);
     assert.match(gl, /IntersectionObserver/, 'pauses when off-screen');
+  });
+});
+
+describe('dashboard helpers', () => {
+  it('splits the donut into proportional, gapped segments that start where the last ended', () => {
+    const segs = donutSegments([50, 30, 20]);
+    assert.deepEqual(segs.map((x) => x.offset), [-0, -50, -80]);
+    assert.ok(Math.abs(segs[0].length - 49.4) < 1e-9);
+    assert.deepEqual(donutSegments([0, 0]), [{ length: 0, offset: 0 }, { length: 0, offset: 0 }]);
+    assert.equal(donutSegments([1, 1000])[0].length, 100 / 1001, 'tiny slices skip the gap');
+  });
+
+  it('counts days and formats short dates', () => {
+    assert.equal(daysUntil('2026-11-01', '2026-10-20'), 12);
+    assert.equal(daysUntil('2026-10-19', '2026-10-20'), -1);
+    assert.equal(localToday(new Date(2026, 0, 5)), '2026-01-05');
+    assert.equal(formatShortDate('2027-02-14'), '14 Feb');
+    assert.equal(formatMoneyCompact(1500000, 'INR'), '₹15L');
+  });
+
+  it('assigns signal-light statuses', () => {
+    const today = '2026-10-20';
+    assert.equal(taskStatus({ due: '2026-10-25' }, true, today).key, 'done');
+    assert.equal(taskStatus({ due: '2026-10-19' }, false, today).key, 'overdue');
+    assert.equal(taskStatus({ due: '2026-11-30', urgent: true }, false, today).key, 'now');
+    assert.equal(taskStatus({ due: '2026-10-20' }, false, today).key, 'now');
+    assert.deepEqual(taskStatus({ due: '2026-10-21' }, false, today), { key: 'soon', label: 'Tomorrow' });
+    assert.equal(taskStatus({ due: '2026-10-27' }, false, today).key, 'soon');
+    assert.deepEqual(taskStatus({ due: '2026-12-01' }, false, today), { key: 'later', label: 'In 42 days' });
+  });
+
+  it('picks the most pressing open tasks', () => {
+    const ms = [{ id: 'a', due: '2026-12-01' }, { id: 'b', due: '2026-11-01' }, { id: 'c', due: '2026-10-25' }];
+    assert.deepEqual(nextTasks(ms, { 'task:c': true }, 5).map((m) => m.id), ['b', 'a']);
+    assert.equal(nextTasks(ms, {}, 1)[0].id, 'c');
+  });
+
+  it('has a colour for every budget category', () => {
+    assert.deepEqual(Object.keys(CATEGORY_COLORS), Object.keys(CATEGORY_LABELS));
+  });
+
+  it('exposes an Overview tab first and defines every referenced icon', () => {
+    const tabs = [...html.matchAll(/role="tab" id="([^"]+)"/g)].map((m) => m[1]);
+    assert.deepEqual(tabs, ['tab-overview', 'tab-ideas', 'tab-budget', 'tab-timeline', 'tab-vendors', 'tab-assistant']);
+    const defined = new Set([...html.matchAll(/<symbol id="i-([^"]+)"/g)].map((m) => m[1]));
+    for (const [, name] of html.matchAll(/href="#i-([^"]+)"/g)) assert.ok(defined.has(name), name);
   });
 });

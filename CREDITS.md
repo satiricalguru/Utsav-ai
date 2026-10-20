@@ -29,3 +29,4 @@ The landing page adapts patterns, not assets, from:
 - Refero Styles design systems for Amrit Palace (parchment palette, light serif display type, a single saffron accent) and Partiful (celebration colour washes, tilted cards)
 - Wedding-planner landing pages collected on Pinterest (serif and script headlines, trust stats, occasion galleries, dark closing call to action)
 - AI product landing pages on Pinterest (dark hero with a glowing horizon), recreated here as an original WebGL shader
+- Dashboard: Refero design systems for Amie (neutral hairline-shadow cards), Flighty (signal-light status colours) and Bevel (bento metric tiles with rings), plus wedding-planner dashboards on Pinterest (sidebar with a tip card, countdown greeting, KPI cards, budget overview, status timeline, month-axis Gantt)

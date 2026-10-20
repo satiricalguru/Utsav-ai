@@ -1,8 +1,8 @@
 import { ApiError, getHealth, postJson } from './api.js';
 import { buildIcs } from './calendar.js';
 import { h, initTabs } from './dom.js';
-import { EVENT_LABELS, formatDate, planToText } from './format.js';
-import { chatMessage, renderBudget, renderIdeas, renderTimeline, renderVendors } from './render.js';
+import { EVENT_LABELS, daysUntil, formatDate, localToday, planToText } from './format.js';
+import { chatMessage, renderBudget, renderIdeas, renderOverview, renderTimeline, renderVendors, sidebarTip } from './render.js';
 import { loadState, saveState } from './store.js';
 
 const $ = (/** @type {string} */ id) => /** @type {HTMLElement} */ (document.getElementById(id));
@@ -120,6 +120,13 @@ function renderPlan(plan) {
   source.className = `badge ${plan.source === 'gemini' ? 'badge-ai' : 'badge-fallback'}`;
   source.textContent = plan.source === 'gemini' ? 'Personalised by Google Gemini' : 'AI offline: showing template ideas';
 
+  const days = daysUntil(input.date, localToday());
+  $('countdown').textContent = days > 1 ? `${days} days to go` : days === 1 ? 'Tomorrow!' : days === 0 ? 'Today is the day!' : 'Celebrated';
+  const tip = sidebarTip(plan);
+  const tipBox = $('dash-tip');
+  tipBox.hidden = !tip;
+  tipBox.replaceChildren(...(tip ?? []));
+
   $('panel-ideas').replaceChildren(...renderIdeas(plan).filter(Boolean));
   renderBudgetPanel();
   renderChecklists();
@@ -133,6 +140,7 @@ function renderBudgetPanel() {
       else state.actuals[category] = value;
       persist();
       renderBudgetPanel();
+      renderOverviewPanel();
       /** @type {HTMLInputElement | null} */ (document.getElementById(`actual-${category}`))?.focus();
     }).filter(Boolean),
   );
@@ -147,8 +155,28 @@ function renderChecklists() {
     renderChecklists();
     if (focusId) document.getElementById(focusId)?.focus();
   };
-  $('panel-timeline').replaceChildren(...renderTimeline(state.plan, state.done, onToggle));
-  $('panel-vendors').replaceChildren(...renderVendors(state.plan, state.done, onToggle));
+  const today = localToday();
+  $('panel-timeline').replaceChildren(...renderTimeline(state.plan, state.done, onToggle, today));
+  $('panel-vendors').replaceChildren(...renderVendors(state.plan, state.done, onToggle, today));
+  renderOverviewPanel(onToggle);
+}
+
+/** @param {(key: string, value: boolean) => void} [onToggle] */
+function renderOverviewPanel(onToggle) {
+  const toggle =
+    onToggle ??
+    ((/** @type {string} */ key, /** @type {boolean} */ value) => {
+      state.done[key] = value;
+      persist();
+      renderChecklists();
+    });
+  $('panel-overview').replaceChildren(
+    ...renderOverview(state.plan, state, {
+      today: localToday(),
+      onToggle: toggle,
+      onNavigate: (tabId) => tabs.select(tabId, true),
+    }).filter(Boolean),
+  );
 }
 
 /** @param {string[]} questions */
@@ -210,7 +238,7 @@ form.addEventListener('submit', async (e) => {
     chatLog.replaceChildren();
     renderSuggestions(defaultSuggestions());
     renderPlan(plan);
-    tabs.select('tab-ideas');
+    tabs.select('tab-overview');
     const title = $('results-title');
     results.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
     title.focus({ preventScroll: true });

@@ -25,8 +25,9 @@ export function h(tag, attrs, ...children) {
 }
 
 /**
- * Accessible tabs following the WAI-ARIA Authoring Practices: arrow keys,
- * Home and End move between tabs; only the active tab is in the tab order.
+ * Accessible tabs following the WAI-ARIA Authoring Practices: arrow keys
+ * (both axes), Home and End move between tabs; only the active tab is in the
+ * tab order.
  * @param {HTMLElement} tablist
  */
 export function initTabs(tablist) {
@@ -51,11 +52,20 @@ export function initTabs(tablist) {
   tablist.addEventListener('keydown', (e) => {
     const i = tabs.indexOf(/** @type {HTMLButtonElement} */ (document.activeElement));
     if (i < 0) return;
-    const next = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: tabs.length - 1 }[e.key];
+    const next = { ArrowRight: i + 1, ArrowDown: i + 1, ArrowLeft: i - 1, ArrowUp: i - 1, Home: 0, End: tabs.length - 1 }[e.key];
     if (next === undefined) return;
     e.preventDefault();
     select(tabs[(next + tabs.length) % tabs.length], true);
   });
 
-  return { select: (/** @type {string} */ id) => select(/** @type {HTMLButtonElement} */ (document.getElementById(id)), false) };
+  // The sidebar is vertical on wide screens and a horizontal strip on phones.
+  const wide = matchMedia('(min-width: 1000px)');
+  const syncOrientation = () => tablist.setAttribute('aria-orientation', wide.matches ? 'vertical' : 'horizontal');
+  wide.addEventListener('change', syncOrientation);
+  syncOrientation();
+
+  return {
+    /** @param {string} id @param {boolean} [focus] */
+    select: (id, focus = false) => select(/** @type {HTMLButtonElement} */ (document.getElementById(id)), focus),
+  };
 }
