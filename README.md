@@ -3,6 +3,8 @@
 > PromptWars Virtual · **Challenge 5: Celebration & Event Planner**
 > A GenAI-powered planning assistant that helps people organise weddings, birthdays and community events with budgets, timelines, vendor checklists and personalised ideas.
 
+**Live demo:** https://utsav-ai-0zi4.onrender.com (free tier: the first visit after a quiet spell can take about 50 s to wake up)
+
 ## The problem
 
 Planning a celebration means juggling a budget across a dozen categories, booking vendors in the right order, and remembering hundreds of small tasks. Most of this happens in scattered WhatsApp chats and spreadsheets. Generic checklists ignore your date, city, guest count, culture and diet. Pure chatbots invent numbers and deadlines.
