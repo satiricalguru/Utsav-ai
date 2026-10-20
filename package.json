@@ -1,0 +1,19 @@
+{
+  "name": "utsav-ai",
+  "version": "1.0.0",
+  "description": "GenAI celebration and event planner: budget split, back-scheduled timeline, vendor checklist and personalised ideas powered by Google Gemini.",
+  "type": "module",
+  "main": "server.js",
+  "private": true,
+  "license": "MIT",
+  "engines": {
+    "node": ">=20.12"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch --env-file-if-exists=.env server.js",
+    "test": "node --test",
+    "test:coverage": "node --test --experimental-test-coverage --test-coverage-exclude=test/**",
+    "check": "node --check server.js && node --test"
+  }
+}

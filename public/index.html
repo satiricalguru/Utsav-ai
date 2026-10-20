@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Utsav AI · Celebration &amp; Event Planner</title>
+  <meta name="description" content="Plan weddings, birthdays and community events with an AI planner: budget split, back-scheduled timeline, vendor checklist and personalised ideas.">
+  <meta name="theme-color" content="#7a1f3d">
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="stylesheet" href="/styles.css">
+  <script type="module" src="/js/main.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="/" aria-label="Utsav AI home">
+        <img src="/icon.svg" alt="" width="32" height="32">
+        <span>Utsav <span class="brand-ai">AI</span></span>
+      </a>
+      <p class="tagline">Your celebration, planned with care</p>
+    </div>
+  </header>
+
+  <main id="main" class="wrap" tabindex="-1">
+    <section id="planner" aria-labelledby="planner-title" class="card">
+      <h1 id="planner-title">Plan your celebration</h1>
+      <p class="lede">Tell us about the event. You will get a budget split, a timeline worked back from your date, a vendor checklist and AI ideas tailored to you.</p>
+
+      <form id="event-form" novalidate>
+        <div id="form-errors" class="form-errors" role="alert" tabindex="-1" hidden></div>
+
+        <fieldset>
+          <legend>The occasion</legend>
+          <div class="grid">
+            <div class="field">
+              <label for="eventType">Event type</label>
+              <select id="eventType" name="eventType" required>
+                <option value="wedding">Wedding</option>
+                <option value="engagement">Engagement</option>
+                <option value="birthday" selected>Birthday</option>
+                <option value="anniversary">Anniversary</option>
+                <option value="baby_shower">Baby shower</option>
+                <option value="housewarming">Housewarming</option>
+                <option value="community">Community event</option>
+                <option value="festival">Festival celebration</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="title">Event name <span class="optional">(optional)</span></label>
+              <input id="title" name="title" type="text" maxlength="80" autocomplete="off" placeholder="e.g. Aarav turns 30">
+            </div>
+            <div class="field">
+              <label for="date">Date</label>
+              <input id="date" name="date" type="date" required aria-describedby="date-hint">
+              <p id="date-hint" class="hint">Any date in the next 3 years.</p>
+            </div>
+            <div class="field">
+              <label for="city">City</label>
+              <input id="city" name="city" type="text" required minlength="2" maxlength="60" autocomplete="address-level2" placeholder="e.g. Jaipur">
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Size and budget</legend>
+          <div class="grid">
+            <div class="field">
+              <label for="guests">Number of guests</label>
+              <input id="guests" name="guests" type="number" inputmode="numeric" min="1" max="5000" step="1" value="60" required>
+            </div>
+            <div class="field">
+              <label for="budget">Total budget</label>
+              <input id="budget" name="budget" type="number" inputmode="numeric" min="1000" max="1000000000" step="100" value="150000" required aria-describedby="budget-hint">
+              <p id="budget-hint" class="hint">Everything included: food, venue, decor and extras.</p>
+            </div>
+            <div class="field">
+              <label for="currency">Currency</label>
+              <select id="currency" name="currency">
+                <option value="INR" selected>INR (₹)</option>
+                <option value="USD">USD ($)</option>
+                <option value="EUR">EUR (€)</option>
+                <option value="GBP">GBP (£)</option>
+                <option value="AED">AED</option>
+              </select>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Style and preferences</legend>
+          <div class="grid">
+            <div class="field">
+              <label for="style">Style</label>
+              <select id="style" name="style">
+                <option value="traditional">Traditional</option>
+                <option value="modern" selected>Modern</option>
+                <option value="minimal">Minimal</option>
+                <option value="luxury">Luxury</option>
+                <option value="eco">Eco-friendly</option>
+                <option value="playful">Playful</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="venueType">Venue</label>
+              <select id="venueType" name="venueType">
+                <option value="indoor">Indoor hall</option>
+                <option value="outdoor">Outdoor / lawn</option>
+                <option value="home">At home</option>
+                <option value="undecided" selected>Not decided yet</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="language">Plan language</label>
+              <select id="language" name="language">
+                <option value="en" selected>English</option>
+                <option value="hi" lang="hi">हिन्दी (Hindi)</option>
+                <option value="bn" lang="bn">বাংলা (Bengali)</option>
+                <option value="ta" lang="ta">தமிழ் (Tamil)</option>
+                <option value="te" lang="te">తెలుగు (Telugu)</option>
+                <option value="mr" lang="mr">मराठी (Marathi)</option>
+                <option value="gu" lang="gu">ગુજરાતી (Gujarati)</option>
+                <option value="kn" lang="kn">ಕನ್ನಡ (Kannada)</option>
+                <option value="ml" lang="ml">മലയാളം (Malayalam)</option>
+                <option value="pa" lang="pa">ਪੰਜਾਬੀ (Punjabi)</option>
+                <option value="ur" lang="ur">اردو (Urdu)</option>
+                <option value="es" lang="es">Español (Spanish)</option>
+                <option value="fr" lang="fr">Français (French)</option>
+                <option value="ar" lang="ar">العربية (Arabic)</option>
+              </select>
+            </div>
+          </div>
+
+          <fieldset class="checks">
+            <legend>Dietary needs <span class="optional">(choose any)</span></legend>
+            <div class="check-grid">
+              <label><input type="checkbox" name="dietary" value="vegetarian"> Vegetarian</label>
+              <label><input type="checkbox" name="dietary" value="vegan"> Vegan</label>
+              <label><input type="checkbox" name="dietary" value="jain"> Jain</label>
+              <label><input type="checkbox" name="dietary" value="halal"> Halal</label>
+              <label><input type="checkbox" name="dietary" value="gluten_free"> Gluten-free</label>
+              <label><input type="checkbox" name="dietary" value="nut_free"> Nut-free</label>
+              <label><input type="checkbox" name="dietary" value="non_vegetarian"> Non-vegetarian</label>
+            </div>
+          </fieldset>
+
+          <div class="field">
+            <label for="notes">Anything special? <span class="optional">(optional)</span></label>
+            <textarea id="notes" name="notes" rows="3" maxlength="500" aria-describedby="notes-count" placeholder="e.g. Grandparents attending, surprise party, loves Bollywood music, monsoon season"></textarea>
+            <p id="notes-count" class="hint" aria-live="polite">0 / 500 characters</p>
+          </div>
+        </fieldset>
+
+        <div class="actions">
+          <button type="submit" class="btn btn-primary" id="submit-btn">Create my plan</button>
+          <p id="ai-status" class="hint" role="status"></p>
+        </div>
+      </form>
+    </section>
+
+    <section id="results" aria-labelledby="results-title" hidden>
+      <div class="results-head card">
+        <div>
+          <p class="eyebrow" id="results-meta"></p>
+          <h2 id="results-title" tabindex="-1"></h2>
+          <p id="results-summary" class="lede"></p>
+          <p id="results-source" class="badge"></p>
+        </div>
+        <div class="toolbar" role="group" aria-label="Plan actions">
+          <button type="button" class="btn" id="btn-ics">Download calendar (.ics)</button>
+          <button type="button" class="btn" id="btn-copy">Copy summary</button>
+          <button type="button" class="btn" id="btn-print">Print / save PDF</button>
+          <button type="button" class="btn btn-ghost" id="btn-edit">Edit details</button>
+        </div>
+      </div>
+
+      <div class="tabs card">
+        <div role="tablist" aria-label="Plan sections" id="tablist">
+          <button role="tab" id="tab-ideas" aria-controls="panel-ideas" aria-selected="true">Ideas</button>
+          <button role="tab" id="tab-budget" aria-controls="panel-budget" aria-selected="false" tabindex="-1">Budget</button>
+          <button role="tab" id="tab-timeline" aria-controls="panel-timeline" aria-selected="false" tabindex="-1">Timeline</button>
+          <button role="tab" id="tab-vendors" aria-controls="panel-vendors" aria-selected="false" tabindex="-1">Vendors</button>
+          <button role="tab" id="tab-assistant" aria-controls="panel-assistant" aria-selected="false" tabindex="-1">Ask Utsav</button>
+        </div>
+
+        <div role="tabpanel" id="panel-ideas" aria-labelledby="tab-ideas" tabindex="0"></div>
+        <div role="tabpanel" id="panel-budget" aria-labelledby="tab-budget" tabindex="0" hidden></div>
+        <div role="tabpanel" id="panel-timeline" aria-labelledby="tab-timeline" tabindex="0" hidden></div>
+        <div role="tabpanel" id="panel-vendors" aria-labelledby="tab-vendors" tabindex="0" hidden></div>
+        <div role="tabpanel" id="panel-assistant" aria-labelledby="tab-assistant" tabindex="0" hidden>
+          <p class="hint">Ask anything about this plan. Answers use your budget, dates and vendors.</p>
+          <div id="chat-log" class="chat-log" role="log" aria-live="polite" aria-label="Conversation with Utsav"></div>
+          <div id="chat-suggestions" class="chips" role="group" aria-label="Suggested questions"></div>
+          <form id="chat-form" class="chat-form">
+            <label for="chat-input" class="visually-hidden">Your question</label>
+            <input id="chat-input" name="question" type="text" maxlength="400" autocomplete="off" placeholder="e.g. How can I cut 20% without losing the vibe?" required>
+            <button type="submit" class="btn btn-primary" id="chat-send">Ask</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <div id="announcer" class="visually-hidden" role="status" aria-live="polite"></div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>Utsav AI · Built with Google Gemini for PromptWars Virtual. Amounts are planning estimates. Always confirm quotes with vendors.</p>
+    </div>
+  </footer>
+</body>
+</html>

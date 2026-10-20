@@ -1,0 +1,9 @@
+{
+  "name": "Utsav AI - Celebration & Event Planner",
+  "short_name": "Utsav AI",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fbf7f2",
+  "theme_color": "#7a1f3d",
+  "icons": [{ "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml" }]
+}
