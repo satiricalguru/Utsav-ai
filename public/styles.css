@@ -333,3 +333,14 @@ tfoot td { font-weight: 700; }
   body { background: #fff; color: #000; }
   td input { border: 0; }
 }
+
+/* Dietary chips: custom toggles; the native checkbox stays for a11y but is visually replaced. */
+.check-grid label { position: relative; padding: 8px 16px 8px 14px; border-radius: 10px; border-width: 1px; background: var(--surface); transition: border-color .2s, background .2s, color .2s; }
+.check-grid input { appearance: none; -webkit-appearance: none; width: 16px; height: 16px; margin: 0; border: 1.5px solid var(--muted); border-radius: 4px; display: grid; place-items: center; transition: background .15s, border-color .15s; }
+.check-grid input::after { content: ""; width: 4px; height: 8px; border: solid var(--on-primary); border-width: 0 2px 2px 0; transform: rotate(45deg) translate(-1px, -1px) scale(0); transition: transform .15s; }
+.check-grid input:checked { background: var(--primary); border-color: var(--primary); }
+.check-grid input:checked::after { transform: rotate(45deg) translate(-1px, -1px) scale(1); }
+.check-grid label:has(input:checked) { border-color: var(--primary); background: color-mix(in srgb, var(--primary) 10%, var(--surface)); color: var(--text); }
+.check-grid label:has(input:focus-visible) { outline: 3px solid var(--focus); outline-offset: 2px; }
+.check-grid input:focus-visible { outline: none; }
+@media (forced-colors: active) { .check-grid input { appearance: auto; } }
