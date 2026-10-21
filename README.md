@@ -37,7 +37,7 @@ Planning a celebration means juggling a budget across a dozen categories, bookin
 **Utsav AI splits the work:** a deterministic engine handles everything that must be *correct*, and Google Gemini handles everything that should feel *personal*.
 
 <div align="center">
-<img src="docs/media/statement.gif" alt="Scrolling statement where each word lights up: a budget that adds up to the last rupee, a timeline worked backwards, vendors booked in the right order, and ideas that feel unmistakably yours" width="100%">
+<img src="docs/media/statement.gif" alt="Scrolling statement where each word lights up: a budget that adds up to the last rupee, a timeline worked backwards, vendors booked in the right order, and ideas that feel unmistakably yours" width="70%">
 </div>
 
 ## See it in action
@@ -76,22 +76,19 @@ Planning a celebration means juggling a budget across a dozen categories, bookin
 
 ### The landing page
 
-<table>
-<tr>
-<td width="50%"><img src="docs/media/occasions.webp" alt="Occasion gallery with photos for weddings, engagements, birthdays and anniversaries"><br><sub><b>Made for every occasion.</b> Pick one to prefill the planner.</sub></td>
-<td width="50%"><img src="docs/media/features.webp" alt="Feature tiles: a budget that always adds up and a timeline worked backwards"><br><sub><b>Everything in one plan.</b> Feature tiles with live counters.</sub></td>
-</tr>
-<tr>
-<td width="50%"><img src="docs/media/planner-light.webp" alt="Planner form with filled fields, custom selects and dietary toggles"><br><sub><b>The planner.</b> About a minute to fill in. No account, no spreadsheet.</sub></td>
-<td width="50%">
-<table><tr>
-<td><img src="docs/media/mobile-hero.webp" alt="Mobile hero"></td>
-<td><img src="docs/media/mobile-dashboard.webp" alt="Mobile dashboard"></td>
-</tr></table>
-<sub><b>Built mobile-first.</b> Every view adapts to phones.</sub>
-</td>
-</tr>
-</table>
+<p align="center">
+  <img src="docs/media/occasions.webp" alt="Occasion gallery with photos for weddings, engagements, birthdays and anniversaries" width="32%">
+  <img src="docs/media/features.webp" alt="Feature tiles: a budget that always adds up and a timeline worked backwards" width="32%">
+  <img src="docs/media/planner-light.webp" alt="Planner form with filled fields, custom selects and dietary toggles" width="32%">
+</p>
+<p align="center"><sub><b>Occasion gallery</b> that prefills the planner · <b>feature tiles</b> with live counters · <b>the planner</b>: about a minute, no account</sub></p>
+
+<p align="center">
+  <img src="docs/media/mobile-hero.webp" alt="Mobile hero" width="180">
+  &nbsp;&nbsp;
+  <img src="docs/media/mobile-dashboard.webp" alt="Mobile dashboard" width="180">
+</p>
+<p align="center"><sub><b>Built mobile-first.</b> Every view adapts to phones.</sub></p>
 
 ## What you get
 
