@@ -138,7 +138,7 @@ export function buildChatSystemPrompt(input, planSummary) {
     GUARDRAILS,
     'Ground every answer in the plan. When suggesting changes to money, show the arithmetic using the plan amounts.',
     'If the question is unrelated to planning this event, politely steer back to the event.',
-    'answer: at most 180 words, plain text, short paragraphs or "- " bullet lines. followUps: 2-3 short next questions the host might ask.',
+    'answer: at most 180 words, plain text without markdown (no asterisks or headings), short paragraphs or "- " bullet lines. followUps: 2-3 short next questions the host might ask.',
     '<computed_plan>',
     JSON.stringify(planSummary),
     '</computed_plan>',
@@ -269,11 +269,25 @@ export function sanitisePlanIdeas(raw, categoryAmounts) {
 }
 
 /**
+ * The UI renders answers as plain text, so markdown emphasis and headings
+ * the model sometimes adds would show up as raw symbols. Bullets ("- ") stay.
+ * @param {string} text
+ */
+export function plainText(text) {
+  return text
+    .replace(/\*\*(.+?)\*\*/g, '$1')
+    .replace(/__(.+?)__/g, '$1')
+    .replace(/(^|[\s(])\*(\S[^*\n]*?)\*(?=[\s).,!?:;]|$)/g, '$1$2')
+    .replace(/^#{1,6}\s+/gm, '')
+    .replace(/^\s*[*•]\s+/gm, '- ');
+}
+
+/**
  * @param {unknown} raw
  */
 export function sanitiseChat(raw) {
   const r = /** @type {Record<string, unknown>} */ (raw && typeof raw === 'object' ? raw : {});
-  const answer = str(r.answer, 1500);
+  const answer = plainText(str(r.answer, 1500));
   if (!answer) throw new Error('AI chat response is empty');
   return { answer, followUps: strList(r.followUps, 3, 120) };
 }

@@ -15,7 +15,7 @@ and ideas that feel unmistakably yours.
 
 ![Node.js](https://img.shields.io/badge/Node.js-%E2%89%A520.12-3c873a?logo=nodedotjs&logoColor=white)
 ![Dependencies](https://img.shields.io/badge/runtime_dependencies-0-1d1d1f)
-![Tests](https://img.shields.io/badge/tests-109_passing-1f7a37)
+![Tests](https://img.shields.io/badge/tests-110_passing-1f7a37)
 ![Coverage](https://img.shields.io/badge/coverage-~99%25-1f7a37)
 ![Languages](https://img.shields.io/badge/plan_languages-14-9c5a14)
 ![License](https://img.shields.io/badge/license-MIT-6b6b70)
@@ -147,7 +147,7 @@ The design was researched from real references (details in [CREDITS.md](CREDITS.
 | **Code quality** | Small single-purpose modules, JSDoc types checked with `tsc --checkJs`, pure functions for the engine, dependency injection for the AI client, fetch, clock and logger |
 | **Security** | Strict CSP (`script-src 'self'`, no inline code), HSTS, X-Frame-Options, nosniff, COOP/CORP, Permissions-Policy. 16 KB body cap and content-type check. Allow-list validation. Prototype-safe enum checks. Rate limits (12/min AI, 240/min general). API key server-side only, sent in a header. No stack traces leak. Static files served only from a preloaded allow-list, so path traversal is impossible. Non-root Docker user |
 | **Efficiency** | Zero runtime dependencies. Assets loaded once and pre-compressed with Brotli and gzip. ETag/304 support, long-cached fonts and photos. LRU+TTL cache with in-flight de-duplication, so duplicate plans cost one model call. Bounded rate-limiter memory. Compact prompts. WebGL paused off-screen |
-| **Testing** | 109 tests with Node's built-in runner: unit tests for every engine, validator, prompt, sanitiser and chart helper; Gemini client tests with a fake fetch; HTTP integration tests (headers, compression, 304, traversal, 400/405/413/415/429, error hiding); tests that keep the HTML in sync with server enums. About 99.9% line coverage |
+| **Testing** | 110 tests with Node's built-in runner: unit tests for every engine, validator, prompt, sanitiser and chart helper; Gemini client tests with a fake fetch; HTTP integration tests (headers, compression, 304, traversal, 400/405/413/415/429, error hiding); tests that keep the HTML in sync with server enums. About 99.9% line coverage |
 | **Accessibility** | Skip link, landmarks, every control labelled, fieldsets and legends. Error summary that takes focus, plus `aria-invalid`. WAI-ARIA tabs with arrow, Home and End keys. Live regions for status and chat. Charts with text alternatives. 44 px touch targets. Visible focus rings. Dark mode, `prefers-reduced-motion`, `forced-colors`. `lang` and `dir` on AI text. Print stylesheet |
 | **Problem alignment** | Weddings, engagements, birthdays, anniversaries, baby showers, housewarmings, community events and festivals. Budgets, timelines, vendor checklists and personalised ideas, exactly as the brief asks |
 

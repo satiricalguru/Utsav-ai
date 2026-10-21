@@ -7,6 +7,7 @@ import {
   buildPlanPrompt,
   buildPlanSystemPrompt,
   fallbackIdeas,
+  plainText,
   sanitiseChat,
   sanitisePlanIdeas,
 } from '../src/ai.js';
@@ -87,6 +88,13 @@ describe('sanitiseChat', () => {
     const chat = sanitiseChat({ answer: '  Book the caterer.  ', followUps: ['a', 'b', 'c', 'd', 5] });
     assert.equal(chat.answer, 'Book the caterer.');
     assert.equal(chat.followUps.length, 3);
+  });
+
+  it('strips markdown emphasis and headings but keeps bullets', () => {
+    assert.equal(plainText('- **Decor:** trim by *20%* and __save__'), '- Decor: trim by 20% and save');
+    assert.equal(plainText('## Plan\n* one\n• two'), 'Plan\n- one\n- two');
+    assert.equal(plainText('5 * 3 = 15'), '5 * 3 = 15');
+    assert.equal(sanitiseChat({ answer: '**Hi**', followUps: [] }).answer, 'Hi');
   });
 
   it('throws on empty answers', () => {
