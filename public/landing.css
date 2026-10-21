@@ -292,13 +292,11 @@ main { padding: 0; }
 
 /* ---------- Planner card: intro beside the form on wide screens ---------- */
 @media (min-width: 1000px) {
-  #planner.card { display: grid; grid-template-columns: 300px minmax(0, 1fr); column-gap: 64px; align-items: start; }
-  #planner > h2, #planner > .lede { grid-column: 1; }
-  #planner > h2 { position: sticky; top: 90px; }
-  #planner > .lede { position: sticky; top: 150px; }
-  #planner > form { grid-column: 2; grid-row: 1 / span 2; }
+  #planner.card { display: grid; grid-template-columns: 320px minmax(0, 1fr); column-gap: 64px; align-items: start; }
+  /* Heading and intro stick together, so a wrapped heading can never overlap the text. */
+  .planner-intro { position: sticky; top: 96px; }
 }
-#planner > h2 { font-size: clamp(2.2rem, 4vw, 3rem); font-weight: 300; letter-spacing: -0.03em; }
+.planner-intro h2 { font-size: clamp(2.2rem, 4vw, 3rem); font-weight: 300; letter-spacing: -0.03em; }
 
 /* ---------- Scroll reveals (only when scripting is on, so no-JS sees everything) ---------- */
 @media (scripting: enabled) {
