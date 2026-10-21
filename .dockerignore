@@ -7,3 +7,4 @@ coverage
 render.yaml
 Dockerfile
 .dockerignore
+docs
