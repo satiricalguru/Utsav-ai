@@ -172,7 +172,7 @@ describe('error handling', () => {
 
 describe('asset caching', () => {
   it('long-caches fonts and photos, revalidates code', async () => {
-    const font = await fetch(`${base}/assets/fonts/pinyon-script.woff2`);
+    const font = await fetch(`${base}/assets/fonts/cormorant-garamond.woff2`);
     assert.equal(font.status, 200);
     assert.equal(font.headers.get('content-type'), 'font/woff2');
     assert.match(font.headers.get('cache-control'), /immutable/);

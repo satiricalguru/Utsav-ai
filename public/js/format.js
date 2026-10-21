@@ -33,18 +33,21 @@ export const FEASIBILITY_TEXT = Object.freeze({
   generous: 'Generous',
 });
 
-/** One colour per budget category, shared by the donut, legend and bars. */
+/**
+ * One colour per budget category, shared by the donut, legend and bars. The
+ * values are CSS variables: a tonal ramp tuned separately for light and dark.
+ */
 export const CATEGORY_COLORS = Object.freeze({
-  venue: '#6e1a37',
-  catering: '#d49653',
-  decor: '#f2b544',
-  attire: '#c46f7e',
-  photography: '#3c6e71',
-  entertainment: '#8e6bbf',
-  stationery: '#7a9e7e',
-  favors: '#e07a5f',
-  logistics: '#5b7db1',
-  contingency: '#a39382',
+  venue: 'var(--cat-venue)',
+  catering: 'var(--cat-catering)',
+  decor: 'var(--cat-decor)',
+  attire: 'var(--cat-attire)',
+  photography: 'var(--cat-photography)',
+  entertainment: 'var(--cat-entertainment)',
+  stationery: 'var(--cat-stationery)',
+  favors: 'var(--cat-favors)',
+  logistics: 'var(--cat-logistics)',
+  contingency: 'var(--cat-contingency)',
 });
 
 /**

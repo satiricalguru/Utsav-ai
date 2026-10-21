@@ -37,31 +37,31 @@ float fbm(vec2 p) {
 
 void main() {
   vec2 p = (gl_FragCoord.xy - 0.5 * uRes) / uRes.y;
-  vec3 saffron = vec3(0.96, 0.58, 0.22);
-  vec3 marigold = vec3(1.0, 0.78, 0.32);
-  vec3 rose = vec3(0.72, 0.18, 0.30);
+  vec3 saffron = vec3(0.86, 0.6, 0.34);
+  vec3 marigold = vec3(1.0, 0.86, 0.62);
+  vec3 rose = vec3(0.45, 0.22, 0.2);
 
-  vec3 col = mix(vec3(0.17, 0.07, 0.05), vec3(0.06, 0.04, 0.035), vUv.y);
+  vec3 col = mix(vec3(0.07, 0.05, 0.04), vec3(0.035, 0.03, 0.028), vUv.y);
 
   // A vast glowing horizon that rises slightly with the pointer and sinks on scroll.
   float R = 1.15;
   vec2 c = vec2((uMouse.x - 0.5) * 0.22, -1.52 + (uMouse.y - 0.5) * 0.05 - uScroll * 0.45);
   float edge = length(p - c) - R;
   float body = 1.0 - smoothstep(-0.004, 0.004, edge);
-  float rim = exp(-abs(edge) * 42.0);
+  float rim = exp(-abs(edge) * 70.0);
   float halo = exp(-max(edge, 0.0) * 2.6);
 
   float smoke = fbm(p * 2.4 + vec2(uTime * 0.03, -uTime * 0.05));
-  col += saffron * halo * 0.55;
-  col += mix(rose, saffron, vUv.x) * smoothstep(0.35, 0.95, smoke) * halo * 0.45;
+  col += saffron * halo * 0.32;
+  col += mix(rose, saffron, vUv.x) * smoothstep(0.4, 0.95, smoke) * halo * 0.2;
 
-  vec3 ground = mix(vec3(0.05, 0.03, 0.025), vec3(0.12, 0.05, 0.03), smoothstep(-0.25, 0.0, edge));
+  vec3 ground = mix(vec3(0.02, 0.018, 0.016), vec3(0.07, 0.045, 0.03), smoothstep(-0.25, 0.0, edge));
   col = mix(col, ground, body);
-  col += saffron * 0.35 * exp(-max(-edge, 0.0) * 10.0) * body;
-  col += marigold * rim * (1.05 + 0.12 * sin(uTime * 1.4));
+  col += saffron * 0.18 * exp(-max(-edge, 0.0) * 12.0) * body;
+  col += marigold * rim * (0.85 + 0.08 * sin(uTime * 0.9));
 
   col *= 1.0 - 0.38 * length(vUv - 0.5);
-  col += (hash(gl_FragCoord.xy + fract(uTime)) - 0.5) * 0.02;
+  col += (hash(gl_FragCoord.xy + fract(uTime)) - 0.5) * 0.012;
   gl_FragColor = vec4(col, 1.0);
 }`;
 
@@ -74,16 +74,15 @@ varying float vKind;
 varying float vRot;
 varying vec3 vColor;
 void main() {
-  float speed = mix(0.02, 0.06, aSeed.y);
+  float speed = mix(0.012, 0.035, aSeed.y);
   float y = 1.2 - mod(aSeed.x * 2.4 + uTime * speed, 2.4);
   float x = (aSeed.z * 2.0 - 1.0) * 1.05 + sin(uTime * (0.25 + aSeed.w * 0.5) + aSeed.x * 6.283) * 0.07;
   y += uScroll * 0.7 * aSeed.w;
   gl_Position = vec4(x, y, 0.0, 1.0);
   vKind = step(0.6, aSeed.w);
-  gl_PointSize = (vKind > 0.5 ? mix(3.0, 12.0, aSeed.y) : mix(9.0, 20.0, aSeed.z)) * uDpr;
+  gl_PointSize = (vKind > 0.5 ? mix(2.0, 9.0, aSeed.y) : mix(6.0, 13.0, aSeed.z)) * uDpr;
   vRot = uTime * (aSeed.y - 0.5) * 1.6 + aSeed.x * 6.283;
-  vColor = mix(vec3(1.0, 0.58, 0.1), vec3(1.0, 0.82, 0.32), aSeed.z);
-  if (aSeed.y > 0.82) vColor = vec3(0.88, 0.3, 0.38);
+  vColor = mix(vec3(0.95, 0.66, 0.36), vec3(1.0, 0.9, 0.72), aSeed.z);
 }`;
 
 const PETAL_FS = `
@@ -94,14 +93,14 @@ varying vec3 vColor;
 void main() {
   vec2 q = gl_PointCoord - 0.5;
   if (vKind > 0.5) {
-    float a = smoothstep(0.5, 0.0, length(q)) * 0.38;
+    float a = smoothstep(0.5, 0.0, length(q)) * 0.22;
     gl_FragColor = vec4(vColor * a, a);
     return;
   }
   float c = cos(vRot), s = sin(vRot);
   q = mat2(c, -s, s, c) * q;
   float d = length(q * vec2(2.3, 1.0));
-  float a = smoothstep(0.5, 0.4, d) * 0.9;
+  float a = smoothstep(0.5, 0.38, d) * 0.5;
   float shade = 0.7 + 0.6 * (0.5 - q.y);
   gl_FragColor = vec4(vColor * shade * a, a);
 }`;
@@ -150,7 +149,7 @@ export function initHeroGl(canvas, { reducedMotion }) {
   gl.bindBuffer(gl.ARRAY_BUFFER, quad);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
 
-  const count = matchMedia('(max-width: 700px)').matches ? 55 : 110;
+  const count = matchMedia('(max-width: 700px)').matches ? 26 : 52;
   const seeds = new Float32Array(count * 4);
   for (let i = 0; i < seeds.length; i++) seeds[i] = Math.random();
   const seedBuf = gl.createBuffer();

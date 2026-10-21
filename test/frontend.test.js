@@ -109,7 +109,7 @@ describe('landing page', () => {
   it('has exactly one h1 and hides decorative layers from assistive tech', () => {
     assert.equal(html.match(/<h1\b/g).length, 1);
     assert.match(html, /<canvas class="hero-gl" aria-hidden="true">/);
-    assert.match(html, /<div class="marquee" aria-hidden="true">/);
+    assert.match(html, /<section class="statement" aria-label="What Utsav does">/);
     assert.match(html, /<div class="story-visual" aria-hidden="true">/);
   });
 

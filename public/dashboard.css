@@ -1,21 +1,22 @@
 /* Results dashboard. Patterns adapted from the research references:
-   - Pinterest wedding dashboards ("Welcome back" / Amore / glass UI kit): sidebar nav with a
-     tip card, greeting header with countdown, KPI cards, budget overview, status timeline,
+   - Pinterest wedding dashboards ("Welcome back" / Amore / glass UI kit): sidebar nav,
+     greeting header with countdown, KPI cards, budget overview, status timeline,
      month-axis Gantt, % complete rings
    - Refero Amie: neutral surfaces, cards lifted by hairline layered shadows, colour only for meaning
    - Refero Flighty: signal-light status system (done / soon / now)
    - Refero Bevel: bento metric tiles with progress rings */
 
-:root {
-  --ok-strong: #2e8b57;
-  --card-shadow: 0 0 0 1px rgb(44 38 34 / 6%), 0 1px 2px rgb(44 38 34 / 5%), 0 8px 24px rgb(44 38 34 / 5%);
-}
-@media (prefers-color-scheme: dark) {
-  :root {
-    --ok-strong: #6fd39a;
-    --card-shadow: 0 0 0 1px rgb(255 255 255 / 6%);
-  }
-}
+/* Charts draw in when a panel is entered (not on every re-render). */
+@keyframes ring-in { from { stroke-dasharray: 0 100; } }
+.is-entering .ring-arc, .is-entering .donut-seg { animation: ring-in 1.1s var(--ease-out) both; }
+.is-entering .progress > span { animation: bar-in 0.9s var(--ease-out) both; }
+@keyframes bar-in { from { width: 0; } }
+.is-entering .kpi, .is-entering .panel-card { animation: card-in 0.6s var(--ease-out) both; }
+.is-entering .kpi:nth-child(2) { animation-delay: 0.05s; }
+.is-entering .kpi:nth-child(3) { animation-delay: 0.1s; }
+.is-entering .kpi:nth-child(4) { animation-delay: 0.15s; }
+@keyframes card-in { from { opacity: 0; transform: translateY(12px); } }
+:root { --card-shadow: var(--shadow); }
 
 [hidden] { display: none !important; }
 
@@ -53,7 +54,8 @@
   transition: background 0.2s, color 0.2s;
 }
 .dash-nav [role="tab"]:hover { background: var(--surface-2); color: var(--text); }
-.dash-nav [role="tab"][aria-selected="true"] { background: var(--surface-2); color: var(--primary); box-shadow: inset 3px 0 0 var(--primary); }
+.dash-nav [role="tab"][aria-selected="true"] { background: var(--surface-2); color: var(--text); }
+.dash-nav [role="tab"][aria-selected="true"] .ico { color: var(--accent); }
 .ico { width: 20px; height: 20px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
 
 
@@ -70,7 +72,7 @@
   .btn-side span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
   .dash-nav[role="tablist"] { flex-direction: row; overflow-x: auto; scrollbar-width: none; }
   .dash-nav [role="tab"] { width: auto; white-space: nowrap; padding: 10px 14px; }
-  .dash-nav [role="tab"][aria-selected="true"] { box-shadow: inset 0 -3px 0 var(--primary); }
+
   .dash-side .toolbar { display: flex; overflow-x: auto; scrollbar-width: none; }
   .btn-side { flex: none; }
 }
@@ -84,16 +86,17 @@
   border-radius: 24px;
   color: var(--on-night);
   background:
-    radial-gradient(80% 120% at 100% 120%, rgb(212 150 83 / 45%), transparent 60%),
-    linear-gradient(135deg, var(--night) 0%, #3a1520 100%);
+    radial-gradient(70% 140% at 100% 130%, rgb(212 149 78 / 28%), transparent 62%),
+    var(--night);
 }
+@media (prefers-color-scheme: dark) { .dash-head { box-shadow: 0 0 0 1px rgb(255 255 255 / 7%); } }
 @media (min-width: 760px) { .dash-head { grid-template-columns: 1fr auto; align-items: end; } }
 .dash-head .eyebrow { color: var(--marigold); }
 .dash-head h2 { font-weight: 400; font-size: clamp(1.8rem, 3.6vw, 2.8rem); line-height: 1.05; }
 .dash-head .lede { color: var(--on-night-muted); margin: 8px 0 0; }
 .dash-head-side { display: grid; gap: 10px; justify-items: start; }
 @media (min-width: 760px) { .dash-head-side { justify-items: end; text-align: right; } }
-.countdown { margin: 0; font-family: var(--font-script); font-size: clamp(2rem, 4vw, 2.8rem); color: var(--marigold); line-height: 1; }
+.countdown { margin: 0; font-family: var(--font-display); font-style: italic; font-weight: 300; font-size: clamp(2rem, 4vw, 2.9rem); letter-spacing: -0.02em; color: var(--marigold); line-height: 1; }
 .dash-head .badge-ai { background: rgb(143 224 168 / 16%); color: #a5ecbb; }
 .dash-head .badge-fallback { background: rgb(255 197 107 / 16%); color: #ffd28a; }
 
@@ -107,13 +110,14 @@
 }
 .card-title { display: flex; align-items: center; gap: 10px; font-size: 1.35rem; margin-bottom: 14px; }
 .card-title .ico { color: var(--accent); }
+.card-title { font-family: var(--font-display); font-weight: 500; letter-spacing: -0.02em; }
 .panel-heading { font-size: 1.5rem; margin: 4px 0 14px; }
 .dash-grid { display: grid; gap: 18px; grid-template-columns: minmax(0, 1fr); align-items: start; }
 @media (min-width: 900px) { .dash-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 [role="tabpanel"] > * + * { margin-top: 18px; }
 [role="tabpanel"]:focus-visible { outline-offset: 4px; border-radius: 12px; }
 .muted { color: var(--muted); }
-.link-btn { background: none; border: 0; padding: 8px 0 0; color: var(--primary); font: inherit; font-weight: 700; cursor: pointer; min-height: 44px; }
+.link-btn { background: none; border: 0; padding: 8px 0 0; color: var(--accent); font: inherit; font-weight: 700; cursor: pointer; min-height: 44px; }
 .link-btn:hover { text-decoration: underline; text-underline-offset: 4px; }
 .clean-list { margin: 0; padding-left: 20px; display: grid; gap: 8px; }
 
@@ -169,16 +173,9 @@
 .spent { margin-top: 16px; }
 
 /* ---------- Tasks ---------- */
-.task {
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  border: 0;
-  box-shadow: inset 0 0 0 1px var(--border);
-  border-left: 4px solid var(--border);
-  border-radius: 12px;
-}
-.task.status-overdue, .task.status-now { border-left-color: var(--danger); }
-.task.status-soon { border-left-color: var(--warn); }
-.task.status-done { border-left-color: var(--ok); }
+.task { grid-template-columns: auto minmax(0, 1fr) auto; border-radius: 0; padding: 14px 4px; border-bottom: 1px solid var(--border); }
+.task-list { gap: 0; }
+.task-list > .task:last-child { border-bottom: 0; }
 .task-side { display: flex; align-items: center; gap: 8px; }
 .task-cal { display: inline-grid; place-items: center; width: 40px; height: 40px; border-radius: 10px; color: var(--muted); }
 .task-cal:hover { background: var(--surface-2); color: var(--primary); }
@@ -199,8 +196,8 @@
 .gantt-label small { color: var(--muted); font-size: 0.8rem; }
 .gantt-track { position: relative; height: 14px; border-radius: 999px; background: var(--surface-2); }
 .gantt-bar { position: absolute; top: 0; bottom: 0; border-radius: 999px; }
-.g0 { background: var(--primary); } .g1 { background: var(--saffron); } .g2 { background: var(--marigold); }
-.g3 { background: #c46f7e; } .g4 { background: var(--ok-strong); } .g5 { background: #5b7db1; }
+.g0 { background: var(--cat-venue); } .g1 { background: var(--cat-catering); } .g2 { background: var(--cat-decor); }
+.g3 { background: var(--cat-entertainment); } .g4 { background: var(--ok); } .g5 { background: var(--cat-logistics); }
 .gantt-axis { position: relative; display: flex; justify-content: space-between; margin: 10px 0 0 162px; padding-top: 10px; border-top: 1px dashed var(--border); font-size: 0.78rem; color: var(--muted); }
 .gantt-today, .gantt-event { position: absolute; top: -6px; width: 10px; height: 10px; margin-left: -5px; border-radius: 50%; }
 .gantt-today, .key-today { background: var(--text); }

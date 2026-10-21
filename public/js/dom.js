@@ -24,6 +24,20 @@ export function h(tag, attrs, ...children) {
   return el;
 }
 
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
+
+/**
+ * Cross-fades a newly shown panel and lets its charts draw in once
+ * (the `is-entering` class scopes the ring/donut keyframes in CSS).
+ * @param {HTMLElement} panel
+ */
+export function enter(panel) {
+  panel.classList.add('is-entering');
+  setTimeout(() => panel.classList.remove('is-entering'), 1200);
+  if (reduceMotion.matches || !panel.animate) return;
+  panel.animate([{ opacity: 0, transform: 'translateY(10px)' }, { opacity: 1, transform: 'none' }], { duration: 380, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' });
+}
+
 /**
  * Accessible tabs following the WAI-ARIA Authoring Practices: arrow keys
  * (both axes), Home and End move between tabs; only the active tab is in the
@@ -40,7 +54,10 @@ export function initTabs(tablist) {
       t.setAttribute('aria-selected', String(active));
       t.tabIndex = active ? 0 : -1;
       const panel = document.getElementById(t.getAttribute('aria-controls') ?? '');
-      if (panel) panel.hidden = !active;
+      if (!panel) continue;
+      const wasHidden = panel.hidden;
+      panel.hidden = !active;
+      if (active && wasHidden) enter(panel);
     }
     if (focus) tab.focus();
   }

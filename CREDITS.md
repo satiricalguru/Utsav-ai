@@ -20,7 +20,6 @@ All photos are from [Unsplash](https://unsplash.com) and used under the [Unsplas
 Self-hosted from Google Fonts under the [SIL Open Font License 1.1](https://openfontlicense.org):
 
 - Cormorant Garamond (Christian Thalmann, Catharsis Fonts)
-- Pinyon Script (Nicole Fally)
 
 ## Design references
 

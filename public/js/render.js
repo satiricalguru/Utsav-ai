@@ -162,10 +162,10 @@ export function renderOverview(plan, state, ctx) {
   const kpis = h(
     'div',
     { class: 'kpi-grid' },
-    kpi('Countdown', countdownLabel, daysLeft > 0 ? `days to ${formatDate(input.date)}` : formatDate(input.date), ring(planningWindow - Math.max(daysLeft, 0), planningWindow, `Planning time used: ${Math.round(((planningWindow - Math.max(daysLeft, 0)) / planningWindow) * 100)}%`, 'var(--saffron)')),
+    kpi('Countdown', countdownLabel, daysLeft > 0 ? `days to ${formatDate(input.date)}` : formatDate(input.date), ring(planningWindow - Math.max(daysLeft, 0), planningWindow, `Planning time used: ${Math.round(((planningWindow - Math.max(daysLeft, 0)) / planningWindow) * 100)}%`, 'var(--accent-soft)')),
     kpi('Budget health', FEASIBILITY_TEXT[health], `${formatMoney(budget.perGuest, budget.currency)} per guest`, pill(FEASIBILITY_STATUS[health], health === 'unrealistic' ? 'Review' : health === 'tight' ? 'Watch' : 'On track'), true),
-    kpi('Tasks', `${tasksDone}/${timeline.milestones.length}`, 'checklist done', ring(tasksDone, timeline.milestones.length, `Tasks done: ${tasksDone} of ${timeline.milestones.length}`, 'var(--ok-strong)')),
-    kpi('Vendors', `${booked}/${vendors.length}`, 'booked and confirmed', ring(booked, vendors.length, `Vendors booked: ${booked} of ${vendors.length}`, 'var(--primary)')),
+    kpi('Tasks', `${tasksDone}/${timeline.milestones.length}`, 'checklist done', ring(tasksDone, timeline.milestones.length, `Tasks done: ${tasksDone} of ${timeline.milestones.length}`, 'var(--ok)')),
+    kpi('Vendors', `${booked}/${vendors.length}`, 'booked and confirmed', ring(booked, vendors.length, `Vendors booked: ${booked} of ${vendors.length}`, 'var(--text)')),
   );
 
   const spentBar = h('span');

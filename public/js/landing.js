@@ -119,20 +119,51 @@ for (const card of document.querySelectorAll('[data-occasion]')) {
   });
 }
 
-// --- Gentle 3D tilt on cards for fine pointers -----------------------------
-if (!reducedMotion && matchMedia('(pointer: fine)').matches) {
-  for (const card of document.querySelectorAll('.tilt')) {
-    const el = /** @type {HTMLElement} */ (card);
-    el.addEventListener('pointermove', (e) => {
-      const r = el.getBoundingClientRect();
-      const x = (e.clientX - r.left) / r.width - 0.5;
-      const y = (e.clientY - r.top) / r.height - 0.5;
-      el.style.setProperty('--rx', `${(-y * 6).toFixed(2)}deg`);
-      el.style.setProperty('--ry', `${(x * 8).toFixed(2)}deg`);
-    });
-    el.addEventListener('pointerleave', () => {
-      el.style.setProperty('--rx', '0deg');
-      el.style.setProperty('--ry', '0deg');
-    });
+// --- Statement: words light up as the section scrolls through -------------
+const statement = document.querySelector('[data-words]');
+if (statement) {
+  /** @type {HTMLElement[]} */
+  const words = [];
+  // Split text into word spans while keeping <em> phrases as accent words.
+  for (const node of [...statement.childNodes]) {
+    const accent = node.nodeType === Node.ELEMENT_NODE;
+    const frag = document.createDocumentFragment();
+    for (const part of (node.textContent ?? '').split(/(\s+)/)) {
+      if (!part) continue;
+      if (/^\s+$/.test(part)) {
+        frag.append(part);
+        continue;
+      }
+      const span = document.createElement('span');
+      span.className = accent ? 'w is-accent' : 'w';
+      span.textContent = part;
+      words.push(span);
+      frag.append(span);
+    }
+    node.replaceWith(frag);
   }
+
+  const section = /** @type {HTMLElement} */ (statement.closest('section'));
+  let lit = -1;
+  const update = () => {
+    const r = section.getBoundingClientRect();
+    // Starts as the section enters (top at 90% of the viewport) and finishes
+    // when its middle reaches 40%, so the reader scrubs through the sentence.
+    const vh = window.innerHeight;
+    const p = Math.min(1, Math.max(0, (vh * 0.9 - r.top) / (vh * 0.5 + r.height / 2)));
+    const n = reducedMotion ? words.length : Math.round(p * words.length);
+    if (n === lit) return;
+    lit = n;
+    words.forEach((w, i) => w.classList.toggle('is-lit', i < n));
+  };
+  let pending = false;
+  window.addEventListener('scroll', () => {
+    if (pending) return;
+    pending = true;
+    requestAnimationFrame(() => {
+      pending = false;
+      update();
+    });
+  }, { passive: true });
+  update();
 }

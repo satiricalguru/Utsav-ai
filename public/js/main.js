@@ -1,6 +1,6 @@
 import { ApiError, getHealth, postJson } from './api.js';
 import { buildIcs } from './calendar.js';
-import { h, initTabs } from './dom.js';
+import { enter, h, initTabs } from './dom.js';
 import { EVENT_LABELS, daysUntil, formatDate, localToday, planToText } from './format.js';
 import { chatMessage, renderBudget, renderIdeas, renderOverview, renderTimeline, renderVendors } from './render.js';
 import { loadState, saveState } from './store.js';
@@ -235,6 +235,7 @@ form.addEventListener('submit', async (e) => {
     renderSuggestions(defaultSuggestions());
     renderPlan(plan);
     tabs.select('tab-overview');
+    enter($('panel-overview'));
     const title = $('results-title');
     results.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
     title.focus({ preventScroll: true });
