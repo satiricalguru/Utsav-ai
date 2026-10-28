@@ -47,7 +47,10 @@ describe('createPlannerService.plan', () => {
     assert.equal(plan.ideas.themes.length, 2);
     assert.equal('extraTasks' in plan.ideas, false);
     assert.ok(plan.timeline.milestones.some((m) => m.ai && m.title.includes('wheelchair')));
-    assert.equal(plan.budget.lines.reduce((s, l) => s + l.amount, 0), 1_500_000);
+    assert.equal(
+      plan.budget.lines.reduce((s, l) => s + l.amount, 0),
+      1_500_000,
+    );
     assert.match(ai.calls[0].prompt, /<computed_plan>/);
   });
 
@@ -80,7 +83,11 @@ describe('createPlannerService.plan', () => {
 });
 
 describe('createPlannerService.chat', () => {
-  const request = { event: eventInput(), question: 'How do I save money?', history: [{ role: 'user', text: 'hi' }] };
+  const request = {
+    event: eventInput(),
+    question: 'How do I save money?',
+    history: [{ role: 'user', text: 'hi' }],
+  };
 
   it('returns grounded Gemini answers', async () => {
     const ai = fakeAi(() => ({ answer: 'Cut decor by 20%.', followUps: ['What else?'] }));

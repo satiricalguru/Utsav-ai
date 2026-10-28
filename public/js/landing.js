@@ -157,13 +157,17 @@ if (statement) {
     words.forEach((w, i) => w.classList.toggle('is-lit', i < n));
   };
   let pending = false;
-  window.addEventListener('scroll', () => {
-    if (pending) return;
-    pending = true;
-    requestAnimationFrame(() => {
-      pending = false;
-      update();
-    });
-  }, { passive: true });
+  window.addEventListener(
+    'scroll',
+    () => {
+      if (pending) return;
+      pending = true;
+      requestAnimationFrame(() => {
+        pending = false;
+        update();
+      });
+    },
+    { passive: true },
+  );
   update();
 }

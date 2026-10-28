@@ -3,6 +3,7 @@ import { readdir, readFile } from 'node:fs/promises';
 import { extname, join, relative, sep } from 'node:path';
 import { brotliCompressSync, gzipSync } from 'node:zlib';
 
+/** @type {Record<string, string>} */
 const MIME = {
   '.html': 'text/html; charset=utf-8',
   '.css': 'text/css; charset=utf-8',
@@ -48,7 +49,7 @@ export async function loadStaticAssets(root) {
     const type = MIME[ext];
     if (!type) continue;
     const body = await readFile(full);
-    const urlPath = '/' + relative(root, full).split(sep).join('/');
+    const urlPath = `/${relative(root, full).split(sep).join('/')}`;
     const compress = COMPRESSIBLE.has(ext) && body.length > 512;
     assets.set(urlPath, {
       body,

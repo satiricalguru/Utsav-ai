@@ -1,30 +1,57 @@
+/** @typedef {Node | string | number | null | undefined | false} Child */
+
+/** @param {unknown} value */
+const isAbsent = (value) => value === null || value === undefined || value === false;
+
+/**
+ * Applies one attribute. `class` and `text` are shorthands, `on*` functions
+ * become listeners, `true` becomes a boolean attribute.
+ * @param {HTMLElement} el
+ * @param {string} key
+ * @param {unknown} value
+ */
+function setAttribute(el, key, value) {
+  if (key === 'class') el.className = String(value);
+  else if (key === 'text') el.textContent = String(value);
+  else if (key.startsWith('on') && typeof value === 'function') {
+    el.addEventListener(key.slice(2), /** @type {EventListener} */ (value));
+  } else el.setAttribute(key, value === true ? '' : String(value));
+}
+
 /**
  * Tiny DOM builder. Text is always inserted with textContent, so model or user
  * output can never be interpreted as HTML.
- *
  * @param {string} tag
  * @param {Record<string, unknown> | null} [attrs]
- * @param {...(Node | string | number | null | undefined | false)} children
+ * @param {...Child} children
  * @returns {HTMLElement}
  */
 export function h(tag, attrs, ...children) {
   const el = document.createElement(tag);
   for (const [key, value] of Object.entries(attrs ?? {})) {
-    if (value === null || value === undefined || value === false) continue;
-    if (key === 'class') el.className = String(value);
-    else if (key === 'text') el.textContent = String(value);
-    else if (key.startsWith('on') && typeof value === 'function') el.addEventListener(key.slice(2), /** @type {EventListener} */ (value));
-    else if (value === true) el.setAttribute(key, '');
-    else el.setAttribute(key, String(value));
+    if (!isAbsent(value)) setAttribute(el, key, value);
   }
   for (const child of children) {
-    if (child === null || child === undefined || child === false) continue;
-    el.append(child instanceof Node ? child : String(child));
+    if (!isAbsent(child)) el.append(child instanceof Node ? child : String(child));
   }
   return el;
 }
 
-const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
+/**
+ * Returns a function that announces a message through a polite live region.
+ * Clearing first, then setting on the next frame, makes screen readers repeat
+ * a message even when it is the same as the last one.
+ * @param {HTMLElement} region
+ * @returns {(message: string) => void}
+ */
+export function createAnnouncer(region) {
+  return (message) => {
+    region.textContent = '';
+    requestAnimationFrame(() => {
+      region.textContent = message;
+    });
+  };
+}
 
 /**
  * Cross-fades a newly shown panel and lets its charts draw in once
@@ -34,8 +61,15 @@ const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
 export function enter(panel) {
   panel.classList.add('is-entering');
   setTimeout(() => panel.classList.remove('is-entering'), 1200);
-  if (reduceMotion.matches || !panel.animate) return;
-  panel.animate([{ opacity: 0, transform: 'translateY(10px)' }, { opacity: 1, transform: 'none' }], { duration: 380, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' });
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduceMotion || !panel.animate) return;
+  panel.animate(
+    [
+      { opacity: 0, transform: 'translateY(10px)' },
+      { opacity: 1, transform: 'none' },
+    ],
+    { duration: 380, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' },
+  );
 }
 
 /**
@@ -69,7 +103,14 @@ export function initTabs(tablist) {
   tablist.addEventListener('keydown', (e) => {
     const i = tabs.indexOf(/** @type {HTMLButtonElement} */ (document.activeElement));
     if (i < 0) return;
-    const next = { ArrowRight: i + 1, ArrowDown: i + 1, ArrowLeft: i - 1, ArrowUp: i - 1, Home: 0, End: tabs.length - 1 }[e.key];
+    const next = {
+      ArrowRight: i + 1,
+      ArrowDown: i + 1,
+      ArrowLeft: i - 1,
+      ArrowUp: i - 1,
+      Home: 0,
+      End: tabs.length - 1,
+    }[e.key];
     if (next === undefined) return;
     e.preventDefault();
     select(tabs[(next + tabs.length) % tabs.length], true);
@@ -77,12 +118,14 @@ export function initTabs(tablist) {
 
   // The sidebar is vertical on wide screens and a horizontal strip on phones.
   const wide = matchMedia('(min-width: 1000px)');
-  const syncOrientation = () => tablist.setAttribute('aria-orientation', wide.matches ? 'vertical' : 'horizontal');
+  const syncOrientation = () =>
+    tablist.setAttribute('aria-orientation', wide.matches ? 'vertical' : 'horizontal');
   wide.addEventListener('change', syncOrientation);
   syncOrientation();
 
   return {
     /** @param {string} id @param {boolean} [focus] */
-    select: (id, focus = false) => select(/** @type {HTMLButtonElement} */ (document.getElementById(id)), focus),
+    select: (id, focus = false) =>
+      select(/** @type {HTMLButtonElement} */ (document.getElementById(id)), focus),
   };
 }

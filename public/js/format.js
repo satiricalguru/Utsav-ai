@@ -2,6 +2,7 @@
  * Display formatting helpers. Pure functions so they run in Node tests too.
  */
 
+/** @type {Readonly<Record<string, string>>} */
 export const EVENT_LABELS = Object.freeze({
   wedding: 'Wedding',
   engagement: 'Engagement',
@@ -13,6 +14,7 @@ export const EVENT_LABELS = Object.freeze({
   festival: 'Festival celebration',
 });
 
+/** @type {Readonly<Record<string, string>>} */
 export const CATEGORY_LABELS = Object.freeze({
   venue: 'Venue',
   catering: 'Food & catering',
@@ -26,6 +28,7 @@ export const CATEGORY_LABELS = Object.freeze({
   contingency: 'Contingency buffer',
 });
 
+/** @type {Readonly<Record<string, string>>} */
 export const FEASIBILITY_TEXT = Object.freeze({
   unrealistic: 'Very tight for this guest count',
   tight: 'Tight but workable',
@@ -36,6 +39,7 @@ export const FEASIBILITY_TEXT = Object.freeze({
 /**
  * One colour per budget category, shared by the donut, legend and bars. The
  * values are CSS variables: a tonal ramp tuned separately for light and dark.
+ * @type {Readonly<Record<string, string>>}
  */
 export const CATEGORY_COLORS = Object.freeze({
   venue: 'var(--cat-venue)',
@@ -62,7 +66,8 @@ export function daysUntil(toIso, fromIso) {
 
 /** Today's local date as `YYYY-MM-DD`. @param {Date} [d] */
 export function localToday(d = new Date()) {
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  const pad = (/** @type {number} */ n) => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 }
 
 /**
@@ -127,7 +132,12 @@ const compactFormatters = new Map();
 export function formatMoneyCompact(amount, currency) {
   let fmt = compactFormatters.get(currency);
   if (!fmt) {
-    fmt = new Intl.NumberFormat(currency === 'INR' ? 'en-IN' : 'en', { style: 'currency', currency, notation: 'compact', maximumFractionDigits: 1 });
+    fmt = new Intl.NumberFormat(currency === 'INR' ? 'en-IN' : 'en', {
+      style: 'currency',
+      currency,
+      notation: 'compact',
+      maximumFractionDigits: 1,
+    });
     compactFormatters.set(currency, fmt);
   }
   return fmt.format(amount);
@@ -140,7 +150,12 @@ export function formatShortDate(iso) {
   return shortDate.format(new Date(`${iso}T00:00:00Z`));
 }
 
-const dateFormatter = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+const dateFormatter = new Intl.DateTimeFormat('en-GB', {
+  day: 'numeric',
+  month: 'short',
+  year: 'numeric',
+  timeZone: 'UTC',
+});
 
 /** @param {string} iso YYYY-MM-DD */
 export function formatDate(iso) {
@@ -159,7 +174,7 @@ export function relativeDays(days) {
 
 /**
  * Plain-text summary used by "Copy summary".
- * @param {any} plan
+ * @param {import('../../types/plan.js').Plan} plan
  */
 export function planToText(plan) {
   const { input, budget, timeline, vendors, ideas } = plan;
@@ -168,7 +183,9 @@ export function planToText(plan) {
     `${EVENT_LABELS[input.eventType]} · ${formatDate(input.date)} · ${input.city} · ${input.guests} guests`,
     '',
     `Budget: ${formatMoney(budget.total, budget.currency)} (${FEASIBILITY_TEXT[budget.feasibility.level]})`,
-    ...budget.lines.map((l) => `- ${CATEGORY_LABELS[l.category]}: ${formatMoney(l.amount, budget.currency)} (${l.percent}%)`),
+    ...budget.lines.map(
+      (l) => `- ${CATEGORY_LABELS[l.category]}: ${formatMoney(l.amount, budget.currency)} (${l.percent}%)`,
+    ),
     '',
     'Timeline:',
     ...timeline.milestones.map((m) => `- ${formatDate(m.due)}: ${m.title}`),

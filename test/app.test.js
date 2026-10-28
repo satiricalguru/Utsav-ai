@@ -22,7 +22,9 @@ before(async () => {
       failNext = false;
       throw new Error('model down');
     }
-    return req.schema.properties.answer ? { answer: 'Book the caterer first.', followUps: [] } : aiPlanResponse();
+    return req.schema.properties.answer
+      ? { answer: 'Book the caterer first.', followUps: [] }
+      : aiPlanResponse();
   });
   const service = createPlannerService({ ai, logger: silentLogger });
   const assets = await loadStaticAssets(publicDir);
@@ -36,7 +38,11 @@ after(() => new Promise((resolve) => server.close(resolve)));
 
 /** @param {string} path @param {unknown} body @param {Record<string, string>} [headers] */
 const post = (path, body, headers = {}) =>
-  fetch(base + path, { method: 'POST', headers: { 'content-type': 'application/json', ...headers }, body: typeof body === 'string' ? body : JSON.stringify(body) });
+  fetch(base + path, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json', ...headers },
+    body: typeof body === 'string' ? body : JSON.stringify(body),
+  });
 
 describe('static assets', () => {
   it('serves the app shell with security headers', async () => {
@@ -123,7 +129,16 @@ describe('API', () => {
 
   it('rejects malformed JSON, wrong content type and oversized bodies', async () => {
     assert.equal((await post('/api/plan', '{bad')).status, 400);
-    assert.equal((await fetch(`${base}/api/plan`, { method: 'POST', headers: { 'content-type': 'text/plain' }, body: 'x' })).status, 415);
+    assert.equal(
+      (
+        await fetch(`${base}/api/plan`, {
+          method: 'POST',
+          headers: { 'content-type': 'text/plain' },
+          body: 'x',
+        })
+      ).status,
+      415,
+    );
     assert.equal((await post('/api/plan', 'x'.repeat(20_000))).status, 413);
   });
 
@@ -136,13 +151,19 @@ describe('API', () => {
 
   it('rate-limits AI endpoints per client', async () => {
     const service = createPlannerService({ ai: null });
-    const s = createServer(createApp({ service, assets: new Map(), logger: silentLogger, rateLimits: { ai: 2 } }));
+    const s = createServer(
+      createApp({ service, assets: new Map(), logger: silentLogger, rateLimits: { ai: 2 } }),
+    );
     await new Promise((resolve) => s.listen(0, '127.0.0.1', resolve));
     const url = `http://127.0.0.1:${s.address().port}/api/chat`;
     const statuses = [];
     let retryAfter = 0;
     for (let i = 0; i < 3; i++) {
-      const res = await fetch(url, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ event: eventInput({ date: futureDate }), question: `Q${i}` }) });
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ event: eventInput({ date: futureDate }), question: `Q${i}` }),
+      });
       await res.arrayBuffer();
       statuses.push(res.status);
       retryAfter = Number(res.headers.get('retry-after') ?? 0);
@@ -156,12 +177,22 @@ describe('API', () => {
 describe('error handling', () => {
   it('hides internal errors from clients', async () => {
     const errors = [];
-    const service = { aiEnabled: false, plan: async () => { throw new Error('secret stack'); }, chat: async () => ({}) };
+    const service = {
+      aiEnabled: false,
+      plan: async () => {
+        throw new Error('secret stack');
+      },
+      chat: async () => ({}),
+    };
     const app = createApp({ service, assets: new Map(), logger: { error: (m, meta) => errors.push(meta) } });
     const s = createServer(app);
     await new Promise((resolve) => s.listen(0, '127.0.0.1', resolve));
     const url = `http://127.0.0.1:${s.address().port}/api/plan`;
-    const res = await fetch(url, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(eventInput({ date: futureDate })) });
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(eventInput({ date: futureDate })),
+    });
     const body = await res.json();
     await new Promise((resolve) => s.close(resolve));
     assert.equal(res.status, 500);
@@ -183,5 +214,39 @@ describe('asset caching', () => {
     const js = await fetch(`${base}/js/landing.js`);
     assert.equal(js.headers.get('cache-control'), 'no-cache');
     await js.arrayBuffer();
+  });
+});
+
+describe('cross-site protection', () => {
+  it('rejects cross-site POSTs from browsers but allows same-origin ones', async () => {
+    const body = JSON.stringify({ eventType: 'rave' });
+    const headers = { 'content-type': 'application/json' };
+    const cross = await fetch(`${base}/api/plan`, {
+      method: 'POST',
+      headers: { ...headers, 'sec-fetch-site': 'cross-site' },
+      body,
+    });
+    assert.equal(cross.status, 403);
+    const sameSite = await fetch(`${base}/api/plan`, {
+      method: 'POST',
+      headers: { ...headers, 'sec-fetch-site': 'same-site' },
+      body,
+    });
+    assert.equal(sameSite.status, 403, 'other apps on the same parent domain are rejected too');
+    const same = await fetch(`${base}/api/plan`, {
+      method: 'POST',
+      headers: { ...headers, 'sec-fetch-site': 'same-origin' },
+      body,
+    });
+    assert.equal(same.status, 400, 'reaches validation');
+  });
+
+  it('falls back to comparing Origin with Host', async () => {
+    const res = await fetch(`${base}/api/chat`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', origin: 'https://evil.example' },
+      body: '{}',
+    });
+    assert.equal(res.status, 403);
   });
 });

@@ -1,15 +1,17 @@
 {
   "compilerOptions": {
     "checkJs": true,
-    "strict": false,
-    "noImplicitAny": false,
+    "strict": true,
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "target": "ES2023",
     "lib": ["ES2023", "DOM", "DOM.Iterable"],
     "types": ["node"],
     "noEmit": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "maxNodeModuleJsDepth": 0,
+    "noUnusedLocals": true,
+    "noFallthroughCasesInSwitch": true
   },
-  "include": ["server.js", "src/**/*.js", "public/js/**/*.js"]
+  "include": ["server.js", "src/**/*.js", "public/js/**/*.js", "types/**/*.d.ts"]
 }

@@ -8,7 +8,11 @@
  * @param {string} text
  */
 export function escapeIcsText(text) {
-  return String(text).replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\r?\n/g, '\\n');
+  return String(text)
+    .replace(/\\/g, '\\\\')
+    .replace(/;/g, '\\;')
+    .replace(/,/g, '\\,')
+    .replace(/\r?\n/g, '\\n');
 }
 
 /**
@@ -46,12 +50,24 @@ function nextDay(iso) {
 }
 
 /**
- * @param {{ input: { eventType: string, title: string, city: string }, timeline: { milestones: { id: string, title: string, due: string }[] } }} plan
+ * @param {Pick<import('../../types/plan.js').Plan, 'input' | 'timeline'>} plan
  * @param {string} [stamp] DTSTAMP in UTC basic format
  */
-export function buildIcs(plan, stamp = new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '')) {
+export function buildIcs(
+  plan,
+  stamp = new Date()
+    .toISOString()
+    .replace(/[-:]/g, '')
+    .replace(/\.\d{3}/, ''),
+) {
   const name = plan.input.title || `${plan.input.eventType.replace('_', ' ')} in ${plan.input.city}`;
-  const lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Utsav AI//Event Planner//EN', 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH'];
+  const lines = [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:-//Utsav AI//Event Planner//EN',
+    'CALSCALE:GREGORIAN',
+    'METHOD:PUBLISH',
+  ];
   for (const m of plan.timeline.milestones) {
     lines.push(
       'BEGIN:VEVENT',
@@ -64,7 +80,7 @@ export function buildIcs(plan, stamp = new Date().toISOString().replace(/[-:]/g,
     );
   }
   lines.push('END:VCALENDAR');
-  return lines.join('\r\n') + '\r\n';
+  return `${lines.join('\r\n')}\r\n`;
 }
 
 /**

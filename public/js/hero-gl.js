@@ -112,18 +112,28 @@ void main() {
  */
 function program(gl, vs, fs) {
   const prog = gl.createProgram();
-  /** @type {Array<[number, string]>} */
-  const stages = [[gl.VERTEX_SHADER, vs], [gl.FRAGMENT_SHADER, fs]];
-  for (const [type, src] of stages) {
-    const shader = gl.createShader(type);
-    gl.shaderSource(shader, src);
-    gl.compileShader(shader);
-    if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(shader) ?? 'shader');
-    gl.attachShader(prog, shader);
-  }
+  if (!prog) throw new Error('WebGL could not create a program');
+  gl.attachShader(prog, compile(gl, gl.VERTEX_SHADER, vs));
+  gl.attachShader(prog, compile(gl, gl.FRAGMENT_SHADER, fs));
   gl.linkProgram(prog);
   if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(prog) ?? 'link');
   return prog;
+}
+
+/**
+ * @param {WebGLRenderingContext} gl
+ * @param {number} type gl.VERTEX_SHADER or gl.FRAGMENT_SHADER
+ * @param {string} source
+ */
+function compile(gl, type, source) {
+  const shader = gl.createShader(type);
+  if (!shader) throw new Error('WebGL could not create a shader');
+  gl.shaderSource(shader, source);
+  gl.compileShader(shader);
+  if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+    throw new Error(gl.getShaderInfoLog(shader) ?? 'shader');
+  }
+  return shader;
 }
 
 /**
@@ -133,10 +143,18 @@ function program(gl, vs, fs) {
  * @param {{ reducedMotion: boolean }} options
  */
 export function initHeroGl(canvas, { reducedMotion }) {
-  const gl = canvas.getContext('webgl', { antialias: false, alpha: false, powerPreference: 'low-power', premultipliedAlpha: true });
-  if (!gl) return null;
+  const context = canvas.getContext('webgl', {
+    antialias: false,
+    alpha: false,
+    powerPreference: 'low-power',
+    premultipliedAlpha: true,
+  });
+  if (!context) return null;
+  const gl = context;
 
+  /** @type {WebGLProgram} */
   let sky;
+  /** @type {WebGLProgram} */
   let petals;
   try {
     sky = program(gl, SKY_VS, SKY_FS);
@@ -156,13 +174,28 @@ export function initHeroGl(canvas, { reducedMotion }) {
   gl.bindBuffer(gl.ARRAY_BUFFER, seedBuf);
   gl.bufferData(gl.ARRAY_BUFFER, seeds, gl.STATIC_DRAW);
 
-  const u = (/** @type {WebGLProgram} */ prog, /** @type {string} */ name) => gl.getUniformLocation(prog, name);
-  const skyU = { res: u(sky, 'uRes'), time: u(sky, 'uTime'), mouse: u(sky, 'uMouse'), scroll: u(sky, 'uScroll') };
+  const u = (/** @type {WebGLProgram} */ prog, /** @type {string} */ name) =>
+    gl.getUniformLocation(prog, name);
+  const skyU = {
+    res: u(sky, 'uRes'),
+    time: u(sky, 'uTime'),
+    mouse: u(sky, 'uMouse'),
+    scroll: u(sky, 'uScroll'),
+  };
   const petalU = { time: u(petals, 'uTime'), scroll: u(petals, 'uScroll'), dpr: u(petals, 'uDpr') };
   const aPos = gl.getAttribLocation(sky, 'aPos');
   const aSeed = gl.getAttribLocation(petals, 'aSeed');
 
-  const state = { mouseX: 0.5, mouseY: 0.5, targetX: 0.5, targetY: 0.5, scroll: 0, visible: true, raf: 0, start: performance.now() };
+  const state = {
+    mouseX: 0.5,
+    mouseY: 0.5,
+    targetX: 0.5,
+    targetY: 0.5,
+    scroll: 0,
+    visible: true,
+    raf: 0,
+    start: performance.now(),
+  };
   const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
 
   function resize() {

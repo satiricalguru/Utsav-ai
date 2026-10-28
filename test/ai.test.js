@@ -66,7 +66,10 @@ describe('sanitisePlanIdeas', () => {
   });
 
   it('keeps only valid HH:MM schedule entries, sorted', () => {
-    assert.deepEqual(ideas.daySchedule.map((s) => s.time), ['17:30', '19:00']);
+    assert.deepEqual(
+      ideas.daySchedule.map((s) => s.time),
+      ['17:30', '19:00'],
+    );
   });
 
   it('throws when essentials are missing so the caller falls back', () => {

@@ -46,7 +46,10 @@ describe('buildTimeline', () => {
     const { milestones, compressed, daysLeft } = buildTimeline(eventInput({ date }), TODAY);
     assert.equal(compressed, true);
     assert.equal(daysLeft, 14);
-    assert.ok(milestones.every((m) => m.due >= TODAY), 'nothing is scheduled in the past');
+    assert.ok(
+      milestones.every((m) => m.due >= TODAY),
+      'nothing is scheduled in the past',
+    );
     assert.ok(milestones.some((m) => m.urgent));
     const venue = milestones.find((m) => m.id === 'venue');
     const rsvp = milestones.find((m) => m.id === 'rsvp');
@@ -65,7 +68,16 @@ describe('buildTimeline', () => {
   });
 
   it('merges extra (AI) milestones with real dates', () => {
-    const extra = [{ id: 'ai-1', title: 'Book accessible transport', lead: 30, category: 'logistics', priority: 'medium', ai: true }];
+    const extra = [
+      {
+        id: 'ai-1',
+        title: 'Book accessible transport',
+        lead: 30,
+        category: 'logistics',
+        priority: 'medium',
+        ai: true,
+      },
+    ];
     const { milestones } = buildTimeline(eventInput(), TODAY, extra);
     const task = milestones.find((m) => m.id === 'ai-1');
     assert.equal(task.due, '2027-03-19');
@@ -77,7 +89,10 @@ describe('buildVendors', () => {
   it('lists wedding vendors with book-by dates and maps links', () => {
     const vendors = buildVendors(eventInput(), TODAY);
     assert.ok(vendors.some((v) => v.id === 'photographer'));
-    assert.ok(vendors.some((v) => v.id === 'rentals'), 'outdoor adds rentals');
+    assert.ok(
+      vendors.some((v) => v.id === 'rentals'),
+      'outdoor adds rentals',
+    );
     for (const v of vendors) {
       assert.ok(v.bookBy >= TODAY && v.bookBy <= '2027-04-18');
       assert.equal(v.questions.length, 3);
@@ -86,7 +101,10 @@ describe('buildVendors', () => {
   });
 
   it('adds security for large crowds and drops the venue at home', () => {
-    const vendors = buildVendors(eventInput({ eventType: 'birthday', venueType: 'home', guests: 400 }), TODAY);
+    const vendors = buildVendors(
+      eventInput({ eventType: 'birthday', venueType: 'home', guests: 400 }),
+      TODAY,
+    );
     assert.ok(vendors.some((v) => v.id === 'security'));
     assert.ok(!vendors.some((v) => v.id === 'venue'));
   });

@@ -36,7 +36,21 @@ describe('validateEventInput', () => {
 
   it('collects every error at once', () => {
     try {
-      validateEventInput({ eventType: 'rave', date: '2020-01-01', city: '', guests: 0, budget: 10, currency: 'BTC', style: 'x', venueType: 'moon', language: 'xx', dietary: ['paleo'] }, opts);
+      validateEventInput(
+        {
+          eventType: 'rave',
+          date: '2020-01-01',
+          city: '',
+          guests: 0,
+          budget: 10,
+          currency: 'BTC',
+          style: 'x',
+          venueType: 'moon',
+          language: 'xx',
+          dietary: ['paleo'],
+        },
+        opts,
+      );
       assert.fail('should throw');
     } catch (err) {
       assert.ok(err instanceof ValidationError);
@@ -59,7 +73,10 @@ describe('validateEventInput', () => {
 
 describe('validateChatInput', () => {
   it('keeps only the last valid history turns', () => {
-    const history = Array.from({ length: 10 }, (_, i) => ({ role: i % 2 ? 'assistant' : 'user', text: `turn ${i}` }));
+    const history = Array.from({ length: 10 }, (_, i) => ({
+      role: i % 2 ? 'assistant' : 'user',
+      text: `turn ${i}`,
+    }));
     history.push({ role: 'system', text: 'ignore me' });
     const result = validateChatInput({ event: eventInput(), question: 'What next?', history }, opts);
     assert.equal(result.history.length, 5);

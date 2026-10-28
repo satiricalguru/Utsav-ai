@@ -31,17 +31,45 @@ export function aiPlanResponse() {
     headline: 'A golden-hour Rajasthani celebration',
     summary: 'Your budget is comfortable for 200 guests and you have plenty of time.',
     themes: [
-      { name: 'Marigold Mahal', description: 'Warm marigold courtyard.', palette: ['#F2A007', '#B5121B', 'red'], decorIdeas: ['Torans', 'Diyas'], signatureMoment: 'Lantern release' },
-      { name: 'Blue City', description: 'Indigo and white.', palette: ['#1D3557', '#F1FAEE', '#E63946'], decorIdeas: ['Block-print runners'], signatureMoment: 'Folk dance' },
-      { name: '', description: 'Missing a name, should be dropped.', palette: [], decorIdeas: [], signatureMoment: '' },
+      {
+        name: 'Marigold Mahal',
+        description: 'Warm marigold courtyard.',
+        palette: ['#F2A007', '#B5121B', 'red'],
+        decorIdeas: ['Torans', 'Diyas'],
+        signatureMoment: 'Lantern release',
+      },
+      {
+        name: 'Blue City',
+        description: 'Indigo and white.',
+        palette: ['#1D3557', '#F1FAEE', '#E63946'],
+        decorIdeas: ['Block-print runners'],
+        signatureMoment: 'Folk dance',
+      },
+      {
+        name: '',
+        description: 'Missing a name, should be dropped.',
+        palette: [],
+        decorIdeas: [],
+        signatureMoment: '',
+      },
     ],
-    menu: { concept: 'Jain-friendly Rajasthani thali', dishes: ['Gatte (Jain)', 'Ker sangri'], dietaryNotes: 'No onion or garlic.' },
+    menu: {
+      concept: 'Jain-friendly Rajasthani thali',
+      dishes: ['Gatte (Jain)', 'Ker sangri'],
+      dietaryNotes: 'No onion or garlic.',
+    },
     guestExperience: ['Shaded seating for elders'],
     budgetTips: [
       { category: 'decor', tip: 'Reuse ceremony flowers.', savingPercent: 90 },
       { category: 'not_a_category', tip: 'Ignored.', savingPercent: 10 },
     ],
-    extraTasks: [{ title: 'Book wheelchair-accessible transport for grandparents', daysBefore: 400, category: 'logistics' }],
+    extraTasks: [
+      {
+        title: 'Book wheelchair-accessible transport for grandparents',
+        daysBefore: 400,
+        category: 'logistics',
+      },
+    ],
     risks: [{ risk: 'April heat', mitigation: 'Evening ceremony with misting fans.' }],
     daySchedule: [
       { time: '19:00', activity: 'Varmala' },

@@ -4,7 +4,7 @@
 
 # Utsav AI
 
-### Every celebration, *beautifully planned*
+### Every celebration, _beautifully planned_
 
 A GenAI planning assistant for weddings, birthdays, pujas and neighbourhood festivals:<br>
 a budget that adds up, a timeline worked back from the big day, the vendors to book,<br>
@@ -15,8 +15,10 @@ and ideas that feel unmistakably yours.
 
 ![Node.js](https://img.shields.io/badge/Node.js-%E2%89%A520.12-3c873a?logo=nodedotjs&logoColor=white)
 ![Dependencies](https://img.shields.io/badge/runtime_dependencies-0-1d1d1f)
-![Tests](https://img.shields.io/badge/tests-110_passing-1f7a37)
-![Coverage](https://img.shields.io/badge/coverage-~99%25-1f7a37)
+[![CI](https://github.com/satiricalguru/Utsav-ai/actions/workflows/ci.yml/badge.svg)](https://github.com/satiricalguru/Utsav-ai/actions/workflows/ci.yml)
+![Tests](https://img.shields.io/badge/tests-137_passing-1f7a37)
+![Coverage](https://img.shields.io/badge/line_coverage-100%25-1f7a37)
+![TypeScript strict](https://img.shields.io/badge/types-strict_checkJs-3178c6)
 ![Languages](https://img.shields.io/badge/plan_languages-14-9c5a14)
 ![License](https://img.shields.io/badge/license-MIT-6b6b70)
 
@@ -34,7 +36,7 @@ and ideas that feel unmistakably yours.
 
 Planning a celebration means juggling a budget across a dozen categories, booking vendors in the right order, and remembering a hundred small things, usually across scattered WhatsApp chats and spreadsheets. Generic checklists ignore your date, city, guest count, culture and diet. Pure chatbots invent numbers and deadlines.
 
-**Utsav AI splits the work:** a deterministic engine handles everything that must be *correct*, and Google Gemini handles everything that should feel *personal*.
+**Utsav AI splits the work:** a deterministic engine handles everything that must be _correct_, and Google Gemini handles everything that should feel _personal_.
 
 <div align="center">
 <img src="docs/media/statement.gif" alt="Scrolling statement where each word lights up: a budget that adds up to the last rupee, a timeline worked backwards, vendors booked in the right order, and ideas that feel unmistakably yours" width="70%">
@@ -92,17 +94,17 @@ Planning a celebration means juggling a budget across a dozen categories, bookin
 
 ## What you get
 
-| Need | How Utsav handles it | Engine or AI |
-| --- | --- | --- |
-| Budget split | Baseline splits per event type, reshaped by style and venue, rounded by largest remainder so the lines always add up exactly; per-plate feasibility check | Engine |
-| Timeline | 15-20 milestones scheduled backwards from the event date; compressed proportionally for short-notice events, with overdue tasks flagged "Do now" | Engine |
-| Vendor checklist | Vendors per event type with book-by dates, the questions to ask, and a Google Maps search in your city | Engine |
-| Theme concepts | 3 themes with colour palettes, decor ideas and a signature moment, matched to style, budget level and city | Gemini |
-| Menu | Regional dishes that respect every dietary rule (e.g. Jain: no onion, garlic or root vegetables) | Gemini |
-| Savings | Category-specific tips; Gemini suggests a percentage, the **server computes the amount** from the real budget line | Gemini + engine |
-| Personal tasks | Tasks a template would miss (e.g. "book wheelchair-accessible transport for grandparents"), given real due dates by the engine | Gemini + engine |
-| Risks and run sheet | Venue, season and crowd risks with mitigations; an event-day schedule | Gemini |
-| Ask Utsav | A chat assistant grounded in your computed plan ("How do I cut 15%?"), with follow-up suggestions | Gemini |
+| Need                | How Utsav handles it                                                                                                                                      | Engine or AI    |
+| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------- |
+| Budget split        | Baseline splits per event type, reshaped by style and venue, rounded by largest remainder so the lines always add up exactly; per-plate feasibility check | Engine          |
+| Timeline            | 15-20 milestones scheduled backwards from the event date; compressed proportionally for short-notice events, with overdue tasks flagged "Do now"          | Engine          |
+| Vendor checklist    | Vendors per event type with book-by dates, the questions to ask, and a Google Maps search in your city                                                    | Engine          |
+| Theme concepts      | 3 themes with colour palettes, decor ideas and a signature moment, matched to style, budget level and city                                                | Gemini          |
+| Menu                | Regional dishes that respect every dietary rule (e.g. Jain: no onion, garlic or root vegetables)                                                          | Gemini          |
+| Savings             | Category-specific tips; Gemini suggests a percentage, the **server computes the amount** from the real budget line                                        | Gemini + engine |
+| Personal tasks      | Tasks a template would miss (e.g. "book wheelchair-accessible transport for grandparents"), given real due dates by the engine                            | Gemini + engine |
+| Risks and run sheet | Venue, season and crowd risks with mitigations; an event-day schedule                                                                                     | Gemini          |
+| Ask Utsav           | A chat assistant grounded in your computed plan ("How do I cut 15%?"), with follow-up suggestions                                                         | Gemini          |
 
 Plans can be written in **14 languages**: English, Hindi, Bengali, Tamil, Telugu, Marathi, Gujarati, Kannada, Malayalam, Punjabi, Urdu, Arabic, Spanish and French, with correct `lang` and `dir` attributes for screen readers and right-to-left scripts.
 
@@ -142,14 +144,14 @@ The design was researched from real references (details in [CREDITS.md](CREDITS.
 
 ## Built for the evaluation criteria
 
-| Criterion | What we did |
-| --- | --- |
-| **Code quality** | Small single-purpose modules, JSDoc types checked with `tsc --checkJs`, pure functions for the engine, dependency injection for the AI client, fetch, clock and logger |
-| **Security** | Strict CSP (`script-src 'self'`, no inline code), HSTS, X-Frame-Options, nosniff, COOP/CORP, Permissions-Policy. 16 KB body cap and content-type check. Allow-list validation. Prototype-safe enum checks. Rate limits (12/min AI, 240/min general). API key server-side only, sent in a header. No stack traces leak. Static files served only from a preloaded allow-list, so path traversal is impossible. Non-root Docker user |
-| **Efficiency** | Zero runtime dependencies. Assets loaded once and pre-compressed with Brotli and gzip. ETag/304 support, long-cached fonts and photos. LRU+TTL cache with in-flight de-duplication, so duplicate plans cost one model call. Bounded rate-limiter memory. Compact prompts. WebGL paused off-screen |
-| **Testing** | 110 tests with Node's built-in runner: unit tests for every engine, validator, prompt, sanitiser and chart helper; Gemini client tests with a fake fetch; HTTP integration tests (headers, compression, 304, traversal, 400/405/413/415/429, error hiding); tests that keep the HTML in sync with server enums. About 99.9% line coverage |
-| **Accessibility** | Skip link, landmarks, every control labelled, fieldsets and legends. Error summary that takes focus, plus `aria-invalid`. WAI-ARIA tabs with arrow, Home and End keys. Live regions for status and chat. Charts with text alternatives. 44 px touch targets. Visible focus rings. Dark mode, `prefers-reduced-motion`, `forced-colors`. `lang` and `dir` on AI text. Print stylesheet |
-| **Problem alignment** | Weddings, engagements, birthdays, anniversaries, baby showers, housewarmings, community events and festivals. Budgets, timelines, vendor checklists and personalised ideas, exactly as the brief asks |
+| Criterion             | What we did                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Code quality**      | Small single-purpose modules (no file over ~300 lines; one module per dashboard tab, the AI layer split into schemas, prompts, sanitising and fallback). Shared data shapes in `types/plan.d.ts`, checked by TypeScript in **strict** mode over JSDoc. ESLint (with complexity, depth and size limits) and Prettier with zero warnings. GitHub Actions CI runs every gate on Node 20, 22 and 24. Dependency injection for the AI client, fetch, clock and logger                                                                                                                                |
+| **Security**          | Strict CSP (`script-src 'self'`, no inline code), HSTS, X-Frame-Options, nosniff, COOP/CORP, Permissions-Policy. Cross-site POSTs rejected via Fetch Metadata and Origin checks. 16 KB body cap and content-type check. Allow-list validation with prototype-safe enum checks; control and bidi characters stripped. Rate limits (12/min AI, 240/min general). API key server-side only, sent in a header. No stack traces leak. Static files served only from a preloaded allow-list. Zero runtime dependencies, `npm audit` clean in CI. Non-root Docker user. See [SECURITY.md](SECURITY.md) |
+| **Efficiency**        | Zero runtime dependencies. Assets loaded once and pre-compressed with Brotli and gzip. ETag/304 support, long-cached fonts and photos. LRU+TTL cache with in-flight de-duplication, so duplicate plans cost one model call. Bounded rate-limiter memory. Compact prompts. WebGL paused off-screen                                                                                                                                                                                                                                                                                               |
+| **Testing**           | 137 tests with Node's built-in runner and **100% line coverage**: unit tests for every engine, validator, prompt, sanitiser and helper; Gemini client tests with a fake fetch; HTTP integration tests (headers, compression, 304, traversal, CSRF, 400/403/405/413/415/429, error hiding); rendering tests for every dashboard view, the charts and keyboard-driven tabs using a tiny dependency-free fake DOM; tests that keep the HTML in sync with server enums                                                                                                                              |
+| **Accessibility**     | Skip link, landmarks, every control labelled, fieldsets and legends. An error summary that takes focus and links to each invalid field, plus `aria-invalid`. WAI-ARIA tabs with arrow, Home and End keys and orientation that follows the layout. Live regions for status and chat. Charts with text alternatives. 44 px touch targets. Visible focus rings. Dark mode, `prefers-reduced-motion`, `prefers-contrast` and `forced-colors`. `lang` and `dir` on AI text. Print stylesheet                                                                                                         |
+| **Problem alignment** | Weddings, engagements, birthdays, anniversaries, baby showers, housewarmings, community events and festivals. Budgets, timelines, vendor checklists and personalised ideas, exactly as the brief asks                                                                                                                                                                                                                                                                                                                                                                                           |
 
 ## Architecture
 
@@ -169,18 +171,19 @@ Node.js HTTP server (zero runtime dependencies)
 
 ## Run locally
 
-Requires Node.js 20.12 or newer. There is nothing to install.
+Requires Node.js 20.12 or newer. The app has no runtime dependencies; `npm install` only adds the development tools (ESLint, Prettier, TypeScript).
 
 ```bash
 cp .env.example .env      # add your GEMINI_API_KEY (free at https://aistudio.google.com/apikey)
 npm run dev               # http://localhost:8080
 npm test                  # run the test suite
 npm run test:coverage     # with coverage report
+npm run verify            # lint + format check + strict typecheck + tests (what CI runs)
 ```
 
 ## Deploy
 
-**Render (free tier):** `render.yaml` is a ready Blueprint. In the Render dashboard choose *New → Blueprint*, pick this repository and enter `GEMINI_API_KEY` when prompted. Every push to `main` redeploys.
+**Render (free tier):** `render.yaml` is a ready Blueprint. In the Render dashboard choose _New → Blueprint_, pick this repository and enter `GEMINI_API_KEY` when prompted. Every push to `main` redeploys.
 
 **Google Cloud Run**
 
@@ -196,14 +199,26 @@ For production, store the key in Secret Manager and use `--set-secrets GEMINI_AP
 ## Project structure
 
 ```
-server.js            entry point and graceful shutdown
-src/                 server modules (see Architecture)
-public/              index.html, styles, js/ modules, fonts and photos
-test/                node:test suites
-docs/media/          README screenshots and GIFs (not served, not in the image)
-Dockerfile           production image
-render.yaml          Render Blueprint
+server.js                 entry point and graceful shutdown
+src/
+  app.js, http.js         routing table, request handling, CSRF check
+  security.js             security headers and rate limiting
+  validation.js, text.js  input validation and text hygiene
+  planner/                budget.js · timeline.js · vendors.js (deterministic engine)
+  ai/                     schemas.js · prompts.js · sanitise.js · fallback.js
+  gemini.js, service.js   Gemini client with model fallback; orchestration and caching
+  static.js               in-memory, pre-compressed static assets
+public/
+  index.html, *.css       landing page and dashboard
+  js/                     main.js (bootstrap) · form.js · dashboard.js · assistant.js · actions.js
+  js/views/               one module per dashboard tab, plus shared ui.js
+types/plan.d.ts           shared data shapes, checked by `npm run typecheck`
+test/                     node:test suites and a tiny fake DOM for view tests
+docs/media/               README screenshots and GIFs (not served, not in the image)
+.github/workflows/ci.yml  lint, format, strict types, tests and audit on Node 20/22/24
 ```
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for conventions and [SECURITY.md](SECURITY.md) for the security model.
 
 ## Credits and license
 

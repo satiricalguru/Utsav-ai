@@ -6,7 +6,7 @@ services:
     runtime: node
     plan: free
     region: singapore
-    buildCommand: npm install --omit=dev
+    buildCommand: npm ci --omit=dev
     startCommand: node server.js
     healthCheckPath: /api/health
     autoDeployTrigger: commit
@@ -16,8 +16,8 @@ services:
       - key: GEMINI_MODEL
         value: gemini-3.6-flash,gemini-2.5-flash,gemini-3.5-flash
       - key: NODE_VERSION
-        value: "22"
+        value: '22'
       - key: NODE_ENV
         value: production
       - key: TRUST_PROXY
-        value: "1"
+        value: '1'

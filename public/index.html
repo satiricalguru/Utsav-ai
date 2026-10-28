@@ -1,449 +1,840 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Utsav AI · Celebration &amp; Event Planner</title>
-  <meta name="description" content="Plan weddings, birthdays and community events with an AI planner: budget split, back-scheduled timeline, vendor checklist and personalised ideas.">
-  <meta name="theme-color" content="#0d0b0a">
-  <link rel="icon" href="/icon.svg" type="image/svg+xml">
-  <link rel="manifest" href="/manifest.webmanifest">
-  <link rel="preload" href="/assets/fonts/cormorant-garamond.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="/styles.css">
-  <link rel="stylesheet" href="/landing.css">
-  <link rel="stylesheet" href="/dashboard.css">
-  <script type="module" src="/js/landing.js"></script>
-  <script type="module" src="/js/main.js"></script>
-</head>
-<body>
-  <a class="skip-link" href="#main">Skip to main content</a>
-  <div class="scroll-progress" aria-hidden="true"></div>
-      <svg width="0" height="0" class="visually-hidden" aria-hidden="true" focusable="false">
-        <symbol id="i-overview" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="2"/><rect x="14" y="3" width="7" height="5" rx="2"/><rect x="14" y="12" width="7" height="9" rx="2"/><rect x="3" y="16" width="7" height="5" rx="2"/></symbol>
-        <symbol id="i-ideas" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18c1.2 0 1.8-.8 1.8-1.7 0-.5-.2-.9-.5-1.2-.3-.3-.5-.7-.5-1.2 0-1 .8-1.7 1.8-1.7H17a4 4 0 0 0 4-4C21 6.6 17 3 12 3z"/><circle cx="7.5" cy="11" r="1.2"/><circle cx="10" cy="7" r="1.2"/><circle cx="15" cy="7.5" r="1.2"/></symbol>
-        <symbol id="i-budget" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="13" rx="3"/><path d="M3 10h18"/><circle cx="16.5" cy="14.5" r="1.3"/><path d="M6 6l9-3 2 3"/></symbol>
-        <symbol id="i-timeline" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4M8 14h3M8 17h6"/></symbol>
-        <symbol id="i-vendors" viewBox="0 0 24 24"><path d="M4 10l1.5-5h13L20 10"/><path d="M4 10a2.7 2.7 0 0 0 5.3 0 2.7 2.7 0 0 0 5.4 0 2.7 2.7 0 0 0 5.3 0"/><path d="M5 12v8h14v-8M10 20v-5h4v5"/></symbol>
-        <symbol id="i-chat" viewBox="0 0 24 24"><path d="M5 18l-1 3 4-2h9a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v9"/><path d="M8 9h8M8 13h5"/></symbol>
-        <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></symbol>
-        <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></symbol>
-        <symbol id="i-print" viewBox="0 0 24 24"><path d="M7 9V3h10v6"/><rect x="3" y="9" width="18" height="8" rx="2"/><path d="M7 14h10v7H7z"/></symbol>
-        <symbol id="i-edit" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13 7l4 4"/></symbol>
-        <symbol id="i-save" viewBox="0 0 24 24"><path d="M5 4h11l3 3v13H5z"/><path d="M8 4v5h7V4M8 20v-6h8v6"/></symbol>
-        <symbol id="i-bulb" viewBox="0 0 24 24"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></symbol>
-      </svg>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Utsav AI · Celebration &amp; Event Planner</title>
+    <meta
+      name="description"
+      content="Plan weddings, birthdays and community events with an AI planner: budget split, back-scheduled timeline, vendor checklist and personalised ideas."
+    />
+    <meta name="theme-color" content="#0d0b0a" />
+    <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link
+      rel="preload"
+      href="/assets/fonts/cormorant-garamond.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/landing.css" />
+    <link rel="stylesheet" href="/dashboard.css" />
+    <script type="module" src="/js/landing.js"></script>
+    <script type="module" src="/js/main.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to main content</a>
+    <div class="scroll-progress" aria-hidden="true"></div>
+    <svg width="0" height="0" class="visually-hidden" aria-hidden="true" focusable="false">
+      <symbol id="i-overview" viewBox="0 0 24 24">
+        <rect x="3" y="3" width="7" height="9" rx="2" />
+        <rect x="14" y="3" width="7" height="5" rx="2" />
+        <rect x="14" y="12" width="7" height="9" rx="2" />
+        <rect x="3" y="16" width="7" height="5" rx="2" />
+      </symbol>
+      <symbol id="i-ideas" viewBox="0 0 24 24">
+        <path
+          d="M12 3a9 9 0 1 0 0 18c1.2 0 1.8-.8 1.8-1.7 0-.5-.2-.9-.5-1.2-.3-.3-.5-.7-.5-1.2 0-1 .8-1.7 1.8-1.7H17a4 4 0 0 0 4-4C21 6.6 17 3 12 3z"
+        />
+        <circle cx="7.5" cy="11" r="1.2" />
+        <circle cx="10" cy="7" r="1.2" />
+        <circle cx="15" cy="7.5" r="1.2" />
+      </symbol>
+      <symbol id="i-budget" viewBox="0 0 24 24">
+        <rect x="3" y="6" width="18" height="13" rx="3" />
+        <path d="M3 10h18" />
+        <circle cx="16.5" cy="14.5" r="1.3" />
+        <path d="M6 6l9-3 2 3" />
+      </symbol>
+      <symbol id="i-timeline" viewBox="0 0 24 24">
+        <rect x="3" y="5" width="18" height="16" rx="3" />
+        <path d="M3 10h18M8 3v4M16 3v4M8 14h3M8 17h6" />
+      </symbol>
+      <symbol id="i-vendors" viewBox="0 0 24 24">
+        <path d="M4 10l1.5-5h13L20 10" />
+        <path d="M4 10a2.7 2.7 0 0 0 5.3 0 2.7 2.7 0 0 0 5.4 0 2.7 2.7 0 0 0 5.3 0" />
+        <path d="M5 12v8h14v-8M10 20v-5h4v5" />
+      </symbol>
+      <symbol id="i-chat" viewBox="0 0 24 24">
+        <path d="M5 18l-1 3 4-2h9a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v9" />
+        <path d="M8 9h8M8 13h5" />
+      </symbol>
+      <symbol id="i-calendar" viewBox="0 0 24 24">
+        <rect x="3" y="5" width="18" height="16" rx="3" />
+        <path d="M3 10h18M8 3v4M16 3v4" />
+      </symbol>
+      <symbol id="i-copy" viewBox="0 0 24 24">
+        <rect x="8" y="8" width="12" height="12" rx="2" />
+        <path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" />
+      </symbol>
+      <symbol id="i-print" viewBox="0 0 24 24">
+        <path d="M7 9V3h10v6" />
+        <rect x="3" y="9" width="18" height="8" rx="2" />
+        <path d="M7 14h10v7H7z" />
+      </symbol>
+      <symbol id="i-edit" viewBox="0 0 24 24">
+        <path d="M4 20h4L19 9l-4-4L4 16z" />
+        <path d="M13 7l4 4" />
+      </symbol>
+      <symbol id="i-save" viewBox="0 0 24 24">
+        <path d="M5 4h11l3 3v13H5z" />
+        <path d="M8 4v5h7V4M8 20v-6h8v6" />
+      </symbol>
+      <symbol id="i-bulb" viewBox="0 0 24 24">
+        <path d="M9 18h6M10 21h4" />
+        <path d="M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z" />
+      </symbol>
+    </svg>
 
-  <header class="site-header">
-    <div class="wrap header-inner">
-      <a class="brand" href="/" aria-label="Utsav AI home">
-        <img src="/icon.svg" alt="" width="32" height="32">
-        <span>Utsav <span class="brand-ai">AI</span></span>
-      </a>
-      <nav class="site-nav" aria-label="Primary">
-        <a href="#how">How it works</a>
-        <a href="#occasions">Occasions</a>
-        <a href="#features">Features</a>
-      </nav>
-      <a class="btn btn-nav" href="#planner">Start planning</a>
-    </div>
-  </header>
-
-  <main id="main" tabindex="-1">
-    <section class="hero" aria-labelledby="hero-title">
-      <canvas class="hero-gl" aria-hidden="true"></canvas>
-      <div class="hero-inner wrap">
-        <p class="eyebrow hero-eyebrow">AI celebration planner · Powered by Google Gemini</p>
-        <h1 id="hero-title" class="hero-title">
-          <span class="hero-line"><span>Every celebration,</span></span>
-          <span class="hero-script"><span>beautifully planned</span></span>
-        </h1>
-        <p class="hero-sub">Weddings, birthdays, pujas and neighbourhood festivals. Tell Utsav your date, guests and budget, and get a budget that adds up, a timeline worked back from the big day, the vendors to book, and ideas that feel like you.</p>
-        <div class="hero-ctas">
-          <a class="btn btn-light btn-lg" href="#planner">Start planning</a>
-          <a class="link-chevron" href="#how">See how it works</a>
-        </div>
-        <dl class="hero-stats">
-          <div><dt>Occasions</dt><dd>8</dd></div>
-          <div><dt>Languages</dt><dd>14</dd></div>
-          <div><dt>Sign-ups needed</dt><dd>0</dd></div>
-        </dl>
+    <header class="site-header">
+      <div class="wrap header-inner">
+        <a class="brand" href="/" aria-label="Utsav AI home">
+          <img src="/icon.svg" alt="" width="32" height="32" />
+          <span>Utsav <span class="brand-ai">AI</span></span>
+        </a>
+        <nav class="site-nav" aria-label="Primary">
+          <a href="#how">How it works</a>
+          <a href="#occasions">Occasions</a>
+          <a href="#features">Features</a>
+        </nav>
+        <a class="btn btn-nav" href="#planner">Start planning</a>
       </div>
-      <a class="scroll-cue" href="#how"><span class="visually-hidden">Scroll to how it works</span><span aria-hidden="true"></span></a>
-    </section>
+    </header>
 
-    <section class="statement" aria-label="What Utsav does">
-      <div class="wrap">
-        <p class="statement-text" data-words>A budget that adds up to the last rupee. A timeline worked backwards from your big day. Vendors booked in the right order. And ideas that feel <em>unmistakably yours.</em></p>
-      </div>
-    </section>
-
-    <section id="how" class="story" aria-labelledby="how-title">
-      <div class="wrap story-grid">
-        <div class="story-text">
-          <p class="eyebrow">How it works</p>
-          <h2 id="how-title" class="display">From a wish list<br><em>to a ready plan</em></h2>
-          <ol class="story-steps">
-            <li class="story-step">
-              <span class="step-num" aria-hidden="true">01</span>
-              <h3>Tell us the essentials</h3>
-              <p>Occasion, date, city, guests and budget. Add notes like “grandparents attending” or “monsoon season”.</p>
-            </li>
-            <li class="story-step">
-              <span class="step-num" aria-hidden="true">02</span>
-              <h3>We do the maths</h3>
-              <p>Your budget is split across ten categories so every rupee is accounted for, and every task is scheduled backwards from your date.</p>
-            </li>
-            <li class="story-step">
-              <span class="step-num" aria-hidden="true">03</span>
-              <h3>Gemini makes it yours</h3>
-              <p>Themes with colour palettes, a menu that respects every dietary rule, risks to watch, and extra tasks only your event needs.</p>
-            </li>
-            <li class="story-step">
-              <span class="step-num" aria-hidden="true">04</span>
-              <h3>Celebrate, stress-free</h3>
-              <p>Tick off tasks, track actual spend, export to Google Calendar and ask Utsav anything along the way.</p>
-            </li>
-          </ol>
-        </div>
-
-        <div class="story-visual" aria-hidden="true">
-          <div class="mock-plan" data-stage="1">
-            <div class="mock-head">
-              <span class="mock-dot"></span><span class="mock-dot"></span><span class="mock-dot"></span>
-              <span class="mock-title">Riya &amp; Kabir · 14 Feb</span>
-            </div>
-            <div class="mock-chips" data-from="1">
-              <span>Wedding</span><span>Jaipur</span><span>200 guests</span><span>₹15,00,000</span>
-            </div>
-            <div class="mock-row" data-from="2">
-              <svg class="mock-donut" viewBox="0 0 42 42">
-                <circle cx="21" cy="21" r="15.9" class="d-track"></circle>
-                <circle cx="21" cy="21" r="15.9" class="d-seg d1"></circle>
-                <circle cx="21" cy="21" r="15.9" class="d-seg d2"></circle>
-                <circle cx="21" cy="21" r="15.9" class="d-seg d3"></circle>
-                <circle cx="21" cy="21" r="15.9" class="d-seg d4"></circle>
-              </svg>
-              <ul class="mock-bars">
-                <li><span>Catering</span><i class="b1"></i></li>
-                <li><span>Venue</span><i class="b2"></i></li>
-                <li><span>Decor</span><i class="b3"></i></li>
-                <li><span>Photo</span><i class="b4"></i></li>
-              </ul>
-            </div>
-            <div class="mock-themes" data-from="3">
-              <div class="mock-theme"><span class="sw s1"></span><span class="sw s2"></span><span class="sw s3"></span><b>Royal Marwar</b></div>
-              <div class="mock-theme"><span class="sw s4"></span><span class="sw s5"></span><span class="sw s6"></span><b>Desert Rose</b></div>
-              <span class="mock-gemini">Personalised by Gemini</span>
-            </div>
-            <ul class="mock-checks" data-from="4">
-              <li>Book the venue</li>
-              <li>Confirm the caterer</li>
-              <li>Send invitations</li>
-            </ul>
-            <p class="mock-ready" data-from="4">Ready to celebrate</p>
+    <main id="main" tabindex="-1">
+      <section class="hero" aria-labelledby="hero-title">
+        <canvas class="hero-gl" aria-hidden="true"></canvas>
+        <div class="hero-inner wrap">
+          <p class="eyebrow hero-eyebrow">AI celebration planner · Powered by Google Gemini</p>
+          <h1 id="hero-title" class="hero-title">
+            <span class="hero-line"><span>Every celebration,</span></span>
+            <span class="hero-script"><span>beautifully planned</span></span>
+          </h1>
+          <p class="hero-sub">
+            Weddings, birthdays, pujas and neighbourhood festivals. Tell Utsav your date, guests and budget,
+            and get a budget that adds up, a timeline worked back from the big day, the vendors to book, and
+            ideas that feel like you.
+          </p>
+          <div class="hero-ctas">
+            <a class="btn btn-light btn-lg" href="#planner">Start planning</a>
+            <a class="link-chevron" href="#how">See how it works</a>
           </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="occasions" class="occasions" aria-labelledby="occasions-title">
-      <div class="wrap">
-        <div class="section-head reveal">
-          <p class="eyebrow">Made for every occasion</p>
-          <h2 id="occasions-title" class="display">Big days, <em>small joys</em></h2>
-          <p class="lede">Pick an occasion to start a plan. Budgets, timelines and vendors adapt to each one.</p>
-        </div>
-        <ul class="occasion-grid">
-          <li class="reveal"><a class="occasion" href="#planner" data-occasion="wedding"><img src="/assets/img/wedding.webp" alt="A wedding ceremony under a floral mandap in a chandelier-lit hall" width="720" height="900" loading="lazy" decoding="async"><span class="occasion-label"><b>Weddings</b><small>Mandap to vidaai</small></span></a></li>
-          <li class="reveal"><a class="occasion" href="#planner" data-occasion="engagement"><img src="/assets/img/engagement.webp" alt="Hands with intricate henna held together" width="720" height="900" loading="lazy" decoding="async"><span class="occasion-label"><b>Engagements</b><small>Rings, rokas, mehendi</small></span></a></li>
-          <li class="reveal"><a class="occasion" href="#planner" data-occasion="birthday"><img src="/assets/img/birthday.webp" alt="Colourful Happy Birthday candles lit on a cake" width="720" height="900" loading="lazy" decoding="async"><span class="occasion-label"><b>Birthdays</b><small>First to fiftieth</small></span></a></li>
-          <li class="reveal"><a class="occasion" href="#planner" data-occasion="anniversary"><img src="/assets/img/anniversary.webp" alt="A candlelit dinner table with tulips" width="720" height="900" loading="lazy" decoding="async"><span class="occasion-label"><b>Anniversaries</b><small>Dinners to vow renewals</small></span></a></li>
-          <li class="reveal"><a class="occasion" href="#planner" data-occasion="baby_shower"><img src="/assets/img/baby_shower.webp" alt="Pastel balloons beside large light-up letters" width="720" height="900" loading="lazy" decoding="async"><span class="occasion-label"><b>Baby showers</b><small>Godh bharai &amp; more</small></span></a></li>
-          <li class="reveal"><a class="occasion" href="#planner" data-occasion="housewarming"><img src="/assets/img/housewarming.webp" alt="An outdoor table set with yellow flowers and plates" width="720" height="900" loading="lazy" decoding="async"><span class="occasion-label"><b>Housewarmings</b><small>Griha pravesh, done right</small></span></a></li>
-          <li class="reveal"><a class="occasion" href="#planner" data-occasion="community"><img src="/assets/img/community.webp" alt="A crowd celebrating Holi with coloured powder" width="720" height="900" loading="lazy" decoding="async"><span class="occasion-label"><b>Community events</b><small>Permits, volunteers, crowds</small></span></a></li>
-          <li class="reveal"><a class="occasion" href="#planner" data-occasion="festival"><img src="/assets/img/festival.webp" alt="Hands cupping a lit clay diya" width="720" height="900" loading="lazy" decoding="async"><span class="occasion-label"><b>Festivals</b><small>Diwali, Pongal, Eid, Christmas</small></span></a></li>
-        </ul>
-      </div>
-    </section>
-
-    <section id="features" class="features" aria-labelledby="features-title">
-      <div class="wrap">
-        <div class="section-head reveal">
-          <p class="eyebrow">Everything in one plan</p>
-          <h2 id="features-title" class="display">Calm in the chaos, <em>care in the details</em></h2>
-        </div>
-        <ul class="bento">
-          <li class="tile tile-budget reveal">
-            <h3>A budget that always adds up</h3>
-            <p>Ten categories, rounded so the total is exact, with a per-plate reality check.</p>
-            <p class="big-num" aria-label="Example budget: 15 lakh rupees"><span aria-hidden="true">₹</span><span data-count-to="1500000" aria-hidden="true">15,00,000</span></p>
-            <div class="alloc" aria-hidden="true">
-              <div class="alloc-bar"><i class="a1"></i><i class="a2"></i><i class="a3"></i><i class="a4"></i><i class="a5"></i></div>
-              <dl class="alloc-key">
-                <div><dt>Catering</dt><dd>30%</dd></div><div><dt>Venue</dt><dd>18%</dd></div><div><dt>Decor</dt><dd>12%</dd></div><div><dt>Attire</dt><dd>10%</dd></div><div><dt>Other</dt><dd>30%</dd></div>
-              </dl>
-            </div>
-          </li>
-          <li class="tile tile-timeline reveal">
-            <h3>A timeline worked backwards</h3>
-            <p>Short notice? The schedule compresses and flags what to do now.</p>
-            <ol class="mini-timeline" aria-hidden="true">
-              <li><time>120 days</time>Book the venue</li>
-              <li><time>30 days</time>Send invitations</li>
-              <li><time>5 days</time>Reconfirm vendors</li>
-            </ol>
-          </li>
-          <li class="tile tile-lang reveal">
-            <h3>Speaks your language</h3>
-            <p>Plans in 14 languages, including Hindi, Tamil, Bengali, Urdu and Arabic.</p>
-            <p class="lang-cycle" aria-hidden="true">
-              <span class="is-on" lang="hi">नमस्ते</span><span lang="bn">নমস্কার</span><span lang="ta">வணக்கம்</span><span lang="te">నమస్కారం</span><span lang="kn">ನಮಸ್ಕಾರ</span><span lang="ur" dir="rtl">آداب</span><span lang="en">Hello</span>
-            </p>
-          </li>
-          <li class="tile tile-chat reveal">
-            <h3>Ask Utsav anything</h3>
-            <p>A planning assistant that answers using your real numbers and dates.</p>
-            <div class="mini-chat" aria-hidden="true">
-              <span class="q">How do I cut 15%?</span>
-              <span class="a">Trim decor by ₹60,000 with seasonal marigolds…</span>
-            </div>
-          </li>
-          <li class="tile tile-vendors reveal">
-            <h3>Vendors, in the right order</h3>
-            <p>Book-by dates, the questions to ask, and a Google Maps search in your city.</p>
-            <ul class="mini-vendors" aria-hidden="true">
-              <li><b>Venue</b><span>Book by 6 Nov</span></li>
-              <li><b>Caterer</b><span>Book by 1 Dec</span></li>
-              <li><b>Photographer</b><span class="late">Book now</span></li>
-            </ul>
-          </li>
-          <li class="tile tile-export reveal">
-            <h3>Yours to keep</h3>
-            <p>No sign-up. Export to Google Calendar, print to PDF, or copy a summary for the family group.</p>
-            <ul class="export-chips" aria-hidden="true">
-              <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-calendar"></use></svg>Calendar (.ics)</li>
-              <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-timeline"></use></svg>Google Calendar</li>
-              <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-print"></use></svg>Print / PDF</li>
-              <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-copy"></use></svg>Copy summary</li>
-              <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-save"></use></svg>Saved on this device</li>
-            </ul>
-          </li>
-        </ul>
-      </div>
-    </section>
-
-    <section class="cta-band" aria-labelledby="cta-title">
-      <div class="wrap reveal">
-        <h2 id="cta-title" class="display">Your celebration <em>starts here</em></h2>
-        <p>It takes about a minute. No account, no spreadsheet.</p>
-        <a class="btn btn-light btn-lg" href="#planner">Plan my celebration</a>
-      </div>
-    </section>
-
-    <div class="wrap app-area">
-    <section id="planner" aria-labelledby="planner-title" class="card">
-      <div class="planner-intro">
-        <h2 id="planner-title">Plan your celebration</h2>
-        <p class="lede">Tell us about the event. You will get a budget split, a timeline worked back from your date, a vendor checklist and AI ideas tailored to you.</p>
-      </div>
-
-      <form id="event-form" novalidate>
-        <div id="form-errors" class="form-errors" role="alert" tabindex="-1" hidden></div>
-
-        <fieldset>
-          <legend>The occasion</legend>
-          <div class="grid">
-            <div class="field">
-              <label for="eventType">Event type</label>
-              <select id="eventType" name="eventType" required>
-                <option value="wedding">Wedding</option>
-                <option value="engagement">Engagement</option>
-                <option value="birthday" selected>Birthday</option>
-                <option value="anniversary">Anniversary</option>
-                <option value="baby_shower">Baby shower</option>
-                <option value="housewarming">Housewarming</option>
-                <option value="community">Community event</option>
-                <option value="festival">Festival celebration</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="title">Event name <span class="optional">(optional)</span></label>
-              <input id="title" name="title" type="text" maxlength="80" autocomplete="off" placeholder="e.g. Aarav turns 30">
-            </div>
-            <div class="field">
-              <label for="date">Date</label>
-              <input id="date" name="date" type="date" required aria-describedby="date-hint">
-              <p id="date-hint" class="hint">Any date in the next 3 years.</p>
-            </div>
-            <div class="field">
-              <label for="city">City</label>
-              <input id="city" name="city" type="text" required minlength="2" maxlength="60" autocomplete="address-level2" placeholder="e.g. Jaipur">
-            </div>
-          </div>
-        </fieldset>
-
-        <fieldset>
-          <legend>Size and budget</legend>
-          <div class="grid">
-            <div class="field">
-              <label for="guests">Number of guests</label>
-              <input id="guests" name="guests" type="number" inputmode="numeric" min="1" max="5000" step="1" value="60" required>
-            </div>
-            <div class="field">
-              <label for="budget">Total budget</label>
-              <input id="budget" name="budget" type="number" inputmode="numeric" min="1000" max="1000000000" step="100" value="150000" required aria-describedby="budget-hint">
-              <p id="budget-hint" class="hint">Everything included: food, venue, decor and extras.</p>
-            </div>
-            <div class="field">
-              <label for="currency">Currency</label>
-              <select id="currency" name="currency">
-                <option value="INR" selected>INR (₹)</option>
-                <option value="USD">USD ($)</option>
-                <option value="EUR">EUR (€)</option>
-                <option value="GBP">GBP (£)</option>
-                <option value="AED">AED</option>
-              </select>
-            </div>
-          </div>
-        </fieldset>
-
-        <fieldset>
-          <legend>Style and preferences</legend>
-          <div class="grid">
-            <div class="field">
-              <label for="style">Style</label>
-              <select id="style" name="style">
-                <option value="traditional">Traditional</option>
-                <option value="modern" selected>Modern</option>
-                <option value="minimal">Minimal</option>
-                <option value="luxury">Luxury</option>
-                <option value="eco">Eco-friendly</option>
-                <option value="playful">Playful</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="venueType">Venue</label>
-              <select id="venueType" name="venueType">
-                <option value="indoor">Indoor hall</option>
-                <option value="outdoor">Outdoor / lawn</option>
-                <option value="home">At home</option>
-                <option value="undecided" selected>Not decided yet</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="language">Plan language</label>
-              <select id="language" name="language">
-                <option value="en" selected>English</option>
-                <option value="hi" lang="hi">हिन्दी (Hindi)</option>
-                <option value="bn" lang="bn">বাংলা (Bengali)</option>
-                <option value="ta" lang="ta">தமிழ் (Tamil)</option>
-                <option value="te" lang="te">తెలుగు (Telugu)</option>
-                <option value="mr" lang="mr">मराठी (Marathi)</option>
-                <option value="gu" lang="gu">ગુજરાતી (Gujarati)</option>
-                <option value="kn" lang="kn">ಕನ್ನಡ (Kannada)</option>
-                <option value="ml" lang="ml">മലയാളം (Malayalam)</option>
-                <option value="pa" lang="pa">ਪੰਜਾਬੀ (Punjabi)</option>
-                <option value="ur" lang="ur">اردو (Urdu)</option>
-                <option value="es" lang="es">Español (Spanish)</option>
-                <option value="fr" lang="fr">Français (French)</option>
-                <option value="ar" lang="ar">العربية (Arabic)</option>
-              </select>
-            </div>
-          </div>
-
-          <fieldset class="checks">
-            <legend>Dietary needs <span class="optional">(choose any)</span></legend>
-            <div class="check-grid">
-              <label><input type="checkbox" name="dietary" value="vegetarian"> Vegetarian</label>
-              <label><input type="checkbox" name="dietary" value="vegan"> Vegan</label>
-              <label><input type="checkbox" name="dietary" value="jain"> Jain</label>
-              <label><input type="checkbox" name="dietary" value="halal"> Halal</label>
-              <label><input type="checkbox" name="dietary" value="gluten_free"> Gluten-free</label>
-              <label><input type="checkbox" name="dietary" value="nut_free"> Nut-free</label>
-              <label><input type="checkbox" name="dietary" value="non_vegetarian"> Non-vegetarian</label>
-            </div>
-          </fieldset>
-
-          <div class="field">
-            <label for="notes">Anything special? <span class="optional">(optional)</span></label>
-            <textarea id="notes" name="notes" rows="3" maxlength="500" aria-describedby="notes-count" placeholder="e.g. Grandparents attending, surprise party, loves Bollywood music, monsoon season"></textarea>
-            <p id="notes-count" class="hint" aria-live="polite">0 / 500 characters</p>
-          </div>
-        </fieldset>
-
-        <div class="actions">
-          <button type="submit" class="btn btn-primary" id="submit-btn">Create my plan</button>
-          <p id="ai-status" class="hint" role="status"></p>
-        </div>
-      </form>
-    </section>
-
-    <section id="results" aria-labelledby="results-title" hidden>
-
-      <div class="dash">
-        <aside class="dash-side" aria-label="Plan navigation and actions">
-          <div role="tablist" aria-label="Plan sections" id="tablist" class="dash-nav">
-            <button role="tab" id="tab-overview" aria-controls="panel-overview" aria-selected="true"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-overview"></use></svg><span>Overview</span></button>
-            <button role="tab" id="tab-ideas" aria-controls="panel-ideas" aria-selected="false" tabindex="-1"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-ideas"></use></svg><span>Ideas</span></button>
-            <button role="tab" id="tab-budget" aria-controls="panel-budget" aria-selected="false" tabindex="-1"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-budget"></use></svg><span>Budget</span></button>
-            <button role="tab" id="tab-timeline" aria-controls="panel-timeline" aria-selected="false" tabindex="-1"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-timeline"></use></svg><span>Timeline</span></button>
-            <button role="tab" id="tab-vendors" aria-controls="panel-vendors" aria-selected="false" tabindex="-1"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-vendors"></use></svg><span>Vendors</span></button>
-            <button role="tab" id="tab-assistant" aria-controls="panel-assistant" aria-selected="false" tabindex="-1"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-chat"></use></svg><span>Ask Utsav</span></button>
-          </div>
-
-
-          <div class="toolbar" role="group" aria-label="Plan actions">
-            <button type="button" class="btn btn-side" id="btn-ics"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-calendar"></use></svg><span>Download calendar (.ics)</span></button>
-            <button type="button" class="btn btn-side" id="btn-copy"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-copy"></use></svg><span>Copy summary</span></button>
-            <button type="button" class="btn btn-side" id="btn-print"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-print"></use></svg><span>Print / save PDF</span></button>
-            <button type="button" class="btn btn-side" id="btn-edit"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-edit"></use></svg><span>Edit details</span></button>
-          </div>
-        </aside>
-
-        <div class="dash-main">
-          <header class="dash-head">
+          <dl class="hero-stats">
             <div>
-              <p class="eyebrow" id="results-meta"></p>
-              <h2 id="results-title" tabindex="-1"></h2>
-              <p id="results-summary" class="lede"></p>
+              <dt>Occasions</dt>
+              <dd>8</dd>
             </div>
-            <div class="dash-head-side">
-              <p id="results-source" class="badge"></p>
-              <p class="countdown" id="countdown" aria-live="off"></p>
+            <div>
+              <dt>Languages</dt>
+              <dd>14</dd>
             </div>
-          </header>
+            <div>
+              <dt>Sign-ups needed</dt>
+              <dd>0</dd>
+            </div>
+          </dl>
+        </div>
+        <a class="scroll-cue" href="#how"
+          ><span class="visually-hidden">Scroll to how it works</span><span aria-hidden="true"></span
+        ></a>
+      </section>
 
-          <div role="tabpanel" id="panel-overview" aria-labelledby="tab-overview" tabindex="0"></div>
-          <div role="tabpanel" id="panel-ideas" aria-labelledby="tab-ideas" tabindex="0" hidden></div>
-          <div role="tabpanel" id="panel-budget" aria-labelledby="tab-budget" tabindex="0" hidden></div>
-          <div role="tabpanel" id="panel-timeline" aria-labelledby="tab-timeline" tabindex="0" hidden></div>
-          <div role="tabpanel" id="panel-vendors" aria-labelledby="tab-vendors" tabindex="0" hidden></div>
-          <div role="tabpanel" id="panel-assistant" aria-labelledby="tab-assistant" tabindex="0" hidden>
-            <div class="panel-card chat-card">
-              <p class="hint">Ask anything about this plan. Answers use your budget, dates and vendors.</p>
-              <div id="chat-log" class="chat-log" role="log" aria-live="polite" aria-label="Conversation with Utsav"></div>
-              <div id="chat-suggestions" class="chips" role="group" aria-label="Suggested questions"></div>
-              <form id="chat-form" class="chat-form">
-                <label for="chat-input" class="visually-hidden">Your question</label>
-                <input id="chat-input" name="question" type="text" maxlength="400" autocomplete="off" placeholder="e.g. How can I cut 20% without losing the vibe?" required>
-                <button type="submit" class="btn btn-primary" id="chat-send">Ask</button>
-              </form>
+      <section class="statement" aria-label="What Utsav does">
+        <div class="wrap">
+          <p class="statement-text" data-words>
+            A budget that adds up to the last rupee. A timeline worked backwards from your big day. Vendors
+            booked in the right order. And ideas that feel <em>unmistakably yours.</em>
+          </p>
+        </div>
+      </section>
+
+      <section id="how" class="story" aria-labelledby="how-title">
+        <div class="wrap story-grid">
+          <div class="story-text">
+            <p class="eyebrow">How it works</p>
+            <h2 id="how-title" class="display">From a wish list<br /><em>to a ready plan</em></h2>
+            <ol class="story-steps">
+              <li class="story-step">
+                <span class="step-num" aria-hidden="true">01</span>
+                <h3>Tell us the essentials</h3>
+                <p>
+                  Occasion, date, city, guests and budget. Add notes like “grandparents attending” or “monsoon
+                  season”.
+                </p>
+              </li>
+              <li class="story-step">
+                <span class="step-num" aria-hidden="true">02</span>
+                <h3>We do the maths</h3>
+                <p>
+                  Your budget is split across ten categories so every rupee is accounted for, and every task
+                  is scheduled backwards from your date.
+                </p>
+              </li>
+              <li class="story-step">
+                <span class="step-num" aria-hidden="true">03</span>
+                <h3>Gemini makes it yours</h3>
+                <p>
+                  Themes with colour palettes, a menu that respects every dietary rule, risks to watch, and
+                  extra tasks only your event needs.
+                </p>
+              </li>
+              <li class="story-step">
+                <span class="step-num" aria-hidden="true">04</span>
+                <h3>Celebrate, stress-free</h3>
+                <p>
+                  Tick off tasks, track actual spend, export to Google Calendar and ask Utsav anything along
+                  the way.
+                </p>
+              </li>
+            </ol>
+          </div>
+
+          <div class="story-visual" aria-hidden="true">
+            <div class="mock-plan" data-stage="1">
+              <div class="mock-head">
+                <span class="mock-dot"></span><span class="mock-dot"></span><span class="mock-dot"></span>
+                <span class="mock-title">Riya &amp; Kabir · 14 Feb</span>
+              </div>
+              <div class="mock-chips" data-from="1">
+                <span>Wedding</span><span>Jaipur</span><span>200 guests</span><span>₹15,00,000</span>
+              </div>
+              <div class="mock-row" data-from="2">
+                <svg class="mock-donut" viewBox="0 0 42 42">
+                  <circle cx="21" cy="21" r="15.9" class="d-track"></circle>
+                  <circle cx="21" cy="21" r="15.9" class="d-seg d1"></circle>
+                  <circle cx="21" cy="21" r="15.9" class="d-seg d2"></circle>
+                  <circle cx="21" cy="21" r="15.9" class="d-seg d3"></circle>
+                  <circle cx="21" cy="21" r="15.9" class="d-seg d4"></circle>
+                </svg>
+                <ul class="mock-bars">
+                  <li><span>Catering</span><i class="b1"></i></li>
+                  <li><span>Venue</span><i class="b2"></i></li>
+                  <li><span>Decor</span><i class="b3"></i></li>
+                  <li><span>Photo</span><i class="b4"></i></li>
+                </ul>
+              </div>
+              <div class="mock-themes" data-from="3">
+                <div class="mock-theme">
+                  <span class="sw s1"></span><span class="sw s2"></span><span class="sw s3"></span
+                  ><b>Royal Marwar</b>
+                </div>
+                <div class="mock-theme">
+                  <span class="sw s4"></span><span class="sw s5"></span><span class="sw s6"></span
+                  ><b>Desert Rose</b>
+                </div>
+                <span class="mock-gemini">Personalised by Gemini</span>
+              </div>
+              <ul class="mock-checks" data-from="4">
+                <li>Book the venue</li>
+                <li>Confirm the caterer</li>
+                <li>Send invitations</li>
+              </ul>
+              <p class="mock-ready" data-from="4">Ready to celebrate</p>
             </div>
           </div>
         </div>
+      </section>
+
+      <section id="occasions" class="occasions" aria-labelledby="occasions-title">
+        <div class="wrap">
+          <div class="section-head reveal">
+            <p class="eyebrow">Made for every occasion</p>
+            <h2 id="occasions-title" class="display">Big days, <em>small joys</em></h2>
+            <p class="lede">
+              Pick an occasion to start a plan. Budgets, timelines and vendors adapt to each one.
+            </p>
+          </div>
+          <ul class="occasion-grid">
+            <li class="reveal">
+              <a class="occasion" href="#planner" data-occasion="wedding"
+                ><img
+                  src="/assets/img/wedding.webp"
+                  alt="A wedding ceremony under a floral mandap in a chandelier-lit hall"
+                  width="720"
+                  height="900"
+                  loading="lazy"
+                  decoding="async"
+                /><span class="occasion-label"><b>Weddings</b><small>Mandap to vidaai</small></span></a
+              >
+            </li>
+            <li class="reveal">
+              <a class="occasion" href="#planner" data-occasion="engagement"
+                ><img
+                  src="/assets/img/engagement.webp"
+                  alt="Hands with intricate henna held together"
+                  width="720"
+                  height="900"
+                  loading="lazy"
+                  decoding="async"
+                /><span class="occasion-label"
+                  ><b>Engagements</b><small>Rings, rokas, mehendi</small></span
+                ></a
+              >
+            </li>
+            <li class="reveal">
+              <a class="occasion" href="#planner" data-occasion="birthday"
+                ><img
+                  src="/assets/img/birthday.webp"
+                  alt="Colourful Happy Birthday candles lit on a cake"
+                  width="720"
+                  height="900"
+                  loading="lazy"
+                  decoding="async"
+                /><span class="occasion-label"><b>Birthdays</b><small>First to fiftieth</small></span></a
+              >
+            </li>
+            <li class="reveal">
+              <a class="occasion" href="#planner" data-occasion="anniversary"
+                ><img
+                  src="/assets/img/anniversary.webp"
+                  alt="A candlelit dinner table with tulips"
+                  width="720"
+                  height="900"
+                  loading="lazy"
+                  decoding="async"
+                /><span class="occasion-label"
+                  ><b>Anniversaries</b><small>Dinners to vow renewals</small></span
+                ></a
+              >
+            </li>
+            <li class="reveal">
+              <a class="occasion" href="#planner" data-occasion="baby_shower"
+                ><img
+                  src="/assets/img/baby_shower.webp"
+                  alt="Pastel balloons beside large light-up letters"
+                  width="720"
+                  height="900"
+                  loading="lazy"
+                  decoding="async"
+                /><span class="occasion-label"
+                  ><b>Baby showers</b><small>Godh bharai &amp; more</small></span
+                ></a
+              >
+            </li>
+            <li class="reveal">
+              <a class="occasion" href="#planner" data-occasion="housewarming"
+                ><img
+                  src="/assets/img/housewarming.webp"
+                  alt="An outdoor table set with yellow flowers and plates"
+                  width="720"
+                  height="900"
+                  loading="lazy"
+                  decoding="async"
+                /><span class="occasion-label"
+                  ><b>Housewarmings</b><small>Griha pravesh, done right</small></span
+                ></a
+              >
+            </li>
+            <li class="reveal">
+              <a class="occasion" href="#planner" data-occasion="community"
+                ><img
+                  src="/assets/img/community.webp"
+                  alt="A crowd celebrating Holi with coloured powder"
+                  width="720"
+                  height="900"
+                  loading="lazy"
+                  decoding="async"
+                /><span class="occasion-label"
+                  ><b>Community events</b><small>Permits, volunteers, crowds</small></span
+                ></a
+              >
+            </li>
+            <li class="reveal">
+              <a class="occasion" href="#planner" data-occasion="festival"
+                ><img
+                  src="/assets/img/festival.webp"
+                  alt="Hands cupping a lit clay diya"
+                  width="720"
+                  height="900"
+                  loading="lazy"
+                  decoding="async"
+                /><span class="occasion-label"
+                  ><b>Festivals</b><small>Diwali, Pongal, Eid, Christmas</small></span
+                ></a
+              >
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="features" class="features" aria-labelledby="features-title">
+        <div class="wrap">
+          <div class="section-head reveal">
+            <p class="eyebrow">Everything in one plan</p>
+            <h2 id="features-title" class="display">Calm in the chaos, <em>care in the details</em></h2>
+          </div>
+          <ul class="bento">
+            <li class="tile tile-budget reveal">
+              <h3>A budget that always adds up</h3>
+              <p>Ten categories, rounded so the total is exact, with a per-plate reality check.</p>
+              <p class="big-num" aria-label="Example budget: 15 lakh rupees">
+                <span aria-hidden="true">₹</span
+                ><span data-count-to="1500000" aria-hidden="true">15,00,000</span>
+              </p>
+              <div class="alloc" aria-hidden="true">
+                <div class="alloc-bar">
+                  <i class="a1"></i><i class="a2"></i><i class="a3"></i><i class="a4"></i><i class="a5"></i>
+                </div>
+                <dl class="alloc-key">
+                  <div>
+                    <dt>Catering</dt>
+                    <dd>30%</dd>
+                  </div>
+                  <div>
+                    <dt>Venue</dt>
+                    <dd>18%</dd>
+                  </div>
+                  <div>
+                    <dt>Decor</dt>
+                    <dd>12%</dd>
+                  </div>
+                  <div>
+                    <dt>Attire</dt>
+                    <dd>10%</dd>
+                  </div>
+                  <div>
+                    <dt>Other</dt>
+                    <dd>30%</dd>
+                  </div>
+                </dl>
+              </div>
+            </li>
+            <li class="tile tile-timeline reveal">
+              <h3>A timeline worked backwards</h3>
+              <p>Short notice? The schedule compresses and flags what to do now.</p>
+              <ol class="mini-timeline" aria-hidden="true">
+                <li><time>120 days</time>Book the venue</li>
+                <li><time>30 days</time>Send invitations</li>
+                <li><time>5 days</time>Reconfirm vendors</li>
+              </ol>
+            </li>
+            <li class="tile tile-lang reveal">
+              <h3>Speaks your language</h3>
+              <p>Plans in 14 languages, including Hindi, Tamil, Bengali, Urdu and Arabic.</p>
+              <p class="lang-cycle" aria-hidden="true">
+                <span class="is-on" lang="hi">नमस्ते</span><span lang="bn">নমস্কার</span
+                ><span lang="ta">வணக்கம்</span><span lang="te">నమస్కారం</span><span lang="kn">ನಮಸ್ಕಾರ</span
+                ><span lang="ur" dir="rtl">آداب</span><span lang="en">Hello</span>
+              </p>
+            </li>
+            <li class="tile tile-chat reveal">
+              <h3>Ask Utsav anything</h3>
+              <p>A planning assistant that answers using your real numbers and dates.</p>
+              <div class="mini-chat" aria-hidden="true">
+                <span class="q">How do I cut 15%?</span>
+                <span class="a">Trim decor by ₹60,000 with seasonal marigolds…</span>
+              </div>
+            </li>
+            <li class="tile tile-vendors reveal">
+              <h3>Vendors, in the right order</h3>
+              <p>Book-by dates, the questions to ask, and a Google Maps search in your city.</p>
+              <ul class="mini-vendors" aria-hidden="true">
+                <li><b>Venue</b><span>Book by 6 Nov</span></li>
+                <li><b>Caterer</b><span>Book by 1 Dec</span></li>
+                <li><b>Photographer</b><span class="late">Book now</span></li>
+              </ul>
+            </li>
+            <li class="tile tile-export reveal">
+              <h3>Yours to keep</h3>
+              <p>
+                No sign-up. Export to Google Calendar, print to PDF, or copy a summary for the family group.
+              </p>
+              <ul class="export-chips" aria-hidden="true">
+                <li>
+                  <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <use href="#i-calendar"></use></svg
+                  >Calendar (.ics)
+                </li>
+                <li>
+                  <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <use href="#i-timeline"></use></svg
+                  >Google Calendar
+                </li>
+                <li>
+                  <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <use href="#i-print"></use></svg
+                  >Print / PDF
+                </li>
+                <li>
+                  <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <use href="#i-copy"></use></svg
+                  >Copy summary
+                </li>
+                <li>
+                  <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <use href="#i-save"></use></svg
+                  >Saved on this device
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="cta-band" aria-labelledby="cta-title">
+        <div class="wrap reveal">
+          <h2 id="cta-title" class="display">Your celebration <em>starts here</em></h2>
+          <p>It takes about a minute. No account, no spreadsheet.</p>
+          <a class="btn btn-light btn-lg" href="#planner">Plan my celebration</a>
+        </div>
+      </section>
+
+      <div class="wrap app-area">
+        <section id="planner" aria-labelledby="planner-title" class="card">
+          <div class="planner-intro">
+            <h2 id="planner-title">Plan your celebration</h2>
+            <p class="lede">
+              Tell us about the event. You will get a budget split, a timeline worked back from your date, a
+              vendor checklist and AI ideas tailored to you.
+            </p>
+          </div>
+
+          <form id="event-form" novalidate>
+            <div id="form-errors" class="form-errors" role="alert" tabindex="-1" hidden></div>
+
+            <fieldset>
+              <legend>The occasion</legend>
+              <div class="grid">
+                <div class="field">
+                  <label for="eventType">Event type</label>
+                  <select id="eventType" name="eventType" required>
+                    <option value="wedding">Wedding</option>
+                    <option value="engagement">Engagement</option>
+                    <option value="birthday" selected>Birthday</option>
+                    <option value="anniversary">Anniversary</option>
+                    <option value="baby_shower">Baby shower</option>
+                    <option value="housewarming">Housewarming</option>
+                    <option value="community">Community event</option>
+                    <option value="festival">Festival celebration</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="title">Event name <span class="optional">(optional)</span></label>
+                  <input
+                    id="title"
+                    name="title"
+                    type="text"
+                    maxlength="80"
+                    autocomplete="off"
+                    placeholder="e.g. Aarav turns 30"
+                  />
+                </div>
+                <div class="field">
+                  <label for="date">Date</label>
+                  <input id="date" name="date" type="date" required aria-describedby="date-hint" />
+                  <p id="date-hint" class="hint">Any date in the next 3 years.</p>
+                </div>
+                <div class="field">
+                  <label for="city">City</label>
+                  <input
+                    id="city"
+                    name="city"
+                    type="text"
+                    required
+                    minlength="2"
+                    maxlength="60"
+                    autocomplete="address-level2"
+                    placeholder="e.g. Jaipur"
+                  />
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend>Size and budget</legend>
+              <div class="grid">
+                <div class="field">
+                  <label for="guests">Number of guests</label>
+                  <input
+                    id="guests"
+                    name="guests"
+                    type="number"
+                    inputmode="numeric"
+                    min="1"
+                    max="5000"
+                    step="1"
+                    value="60"
+                    required
+                  />
+                </div>
+                <div class="field">
+                  <label for="budget">Total budget</label>
+                  <input
+                    id="budget"
+                    name="budget"
+                    type="number"
+                    inputmode="numeric"
+                    min="1000"
+                    max="1000000000"
+                    step="100"
+                    value="150000"
+                    required
+                    aria-describedby="budget-hint"
+                  />
+                  <p id="budget-hint" class="hint">Everything included: food, venue, decor and extras.</p>
+                </div>
+                <div class="field">
+                  <label for="currency">Currency</label>
+                  <select id="currency" name="currency">
+                    <option value="INR" selected>INR (₹)</option>
+                    <option value="USD">USD ($)</option>
+                    <option value="EUR">EUR (€)</option>
+                    <option value="GBP">GBP (£)</option>
+                    <option value="AED">AED</option>
+                  </select>
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend>Style and preferences</legend>
+              <div class="grid">
+                <div class="field">
+                  <label for="style">Style</label>
+                  <select id="style" name="style">
+                    <option value="traditional">Traditional</option>
+                    <option value="modern" selected>Modern</option>
+                    <option value="minimal">Minimal</option>
+                    <option value="luxury">Luxury</option>
+                    <option value="eco">Eco-friendly</option>
+                    <option value="playful">Playful</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="venueType">Venue</label>
+                  <select id="venueType" name="venueType">
+                    <option value="indoor">Indoor hall</option>
+                    <option value="outdoor">Outdoor / lawn</option>
+                    <option value="home">At home</option>
+                    <option value="undecided" selected>Not decided yet</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="language">Plan language</label>
+                  <select id="language" name="language">
+                    <option value="en" selected>English</option>
+                    <option value="hi" lang="hi">हिन्दी (Hindi)</option>
+                    <option value="bn" lang="bn">বাংলা (Bengali)</option>
+                    <option value="ta" lang="ta">தமிழ் (Tamil)</option>
+                    <option value="te" lang="te">తెలుగు (Telugu)</option>
+                    <option value="mr" lang="mr">मराठी (Marathi)</option>
+                    <option value="gu" lang="gu">ગુજરાતી (Gujarati)</option>
+                    <option value="kn" lang="kn">ಕನ್ನಡ (Kannada)</option>
+                    <option value="ml" lang="ml">മലയാളം (Malayalam)</option>
+                    <option value="pa" lang="pa">ਪੰਜਾਬੀ (Punjabi)</option>
+                    <option value="ur" lang="ur">اردو (Urdu)</option>
+                    <option value="es" lang="es">Español (Spanish)</option>
+                    <option value="fr" lang="fr">Français (French)</option>
+                    <option value="ar" lang="ar">العربية (Arabic)</option>
+                  </select>
+                </div>
+              </div>
+
+              <fieldset class="checks">
+                <legend>Dietary needs <span class="optional">(choose any)</span></legend>
+                <div class="check-grid">
+                  <label><input type="checkbox" name="dietary" value="vegetarian" /> Vegetarian</label>
+                  <label><input type="checkbox" name="dietary" value="vegan" /> Vegan</label>
+                  <label><input type="checkbox" name="dietary" value="jain" /> Jain</label>
+                  <label><input type="checkbox" name="dietary" value="halal" /> Halal</label>
+                  <label><input type="checkbox" name="dietary" value="gluten_free" /> Gluten-free</label>
+                  <label><input type="checkbox" name="dietary" value="nut_free" /> Nut-free</label>
+                  <label
+                    ><input type="checkbox" name="dietary" value="non_vegetarian" /> Non-vegetarian</label
+                  >
+                </div>
+              </fieldset>
+
+              <div class="field">
+                <label for="notes">Anything special? <span class="optional">(optional)</span></label>
+                <textarea
+                  id="notes"
+                  name="notes"
+                  rows="3"
+                  maxlength="500"
+                  aria-describedby="notes-count"
+                  placeholder="e.g. Grandparents attending, surprise party, loves Bollywood music, monsoon season"
+                ></textarea>
+                <p id="notes-count" class="hint" aria-live="polite">0 / 500 characters</p>
+              </div>
+            </fieldset>
+
+            <div class="actions">
+              <button type="submit" class="btn btn-primary" id="submit-btn">Create my plan</button>
+              <p id="ai-status" class="hint" role="status"></p>
+            </div>
+          </form>
+        </section>
+
+        <section id="results" aria-labelledby="results-title" hidden>
+          <div class="dash">
+            <aside class="dash-side" aria-label="Plan navigation and actions">
+              <div role="tablist" aria-label="Plan sections" id="tablist" class="dash-nav">
+                <button role="tab" id="tab-overview" aria-controls="panel-overview" aria-selected="true">
+                  <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <use href="#i-overview"></use></svg
+                  ><span>Overview</span>
+                </button>
+                <button
+                  role="tab"
+                  id="tab-ideas"
+                  aria-controls="panel-ideas"
+                  aria-selected="false"
+                  tabindex="-1"
+                >
+                  <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <use href="#i-ideas"></use></svg
+                  ><span>Ideas</span>
+                </button>
+                <button
+                  role="tab"
+                  id="tab-budget"
+                  aria-controls="panel-budget"
+                  aria-selected="false"
+                  tabindex="-1"
+                >
+                  <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <use href="#i-budget"></use></svg
+                  ><span>Budget</span>
+                </button>
+                <button
+                  role="tab"
+                  id="tab-timeline"
+                  aria-controls="panel-timeline"
+                  aria-selected="false"
+                  tabindex="-1"
+                >
+                  <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <use href="#i-timeline"></use></svg
+                  ><span>Timeline</span>
+                </button>
+                <button
+                  role="tab"
+                  id="tab-vendors"
+                  aria-controls="panel-vendors"
+                  aria-selected="false"
+                  tabindex="-1"
+                >
+                  <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <use href="#i-vendors"></use></svg
+                  ><span>Vendors</span>
+                </button>
+                <button
+                  role="tab"
+                  id="tab-assistant"
+                  aria-controls="panel-assistant"
+                  aria-selected="false"
+                  tabindex="-1"
+                >
+                  <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <use href="#i-chat"></use></svg
+                  ><span>Ask Utsav</span>
+                </button>
+              </div>
+
+              <div class="toolbar" role="group" aria-label="Plan actions">
+                <button type="button" class="btn btn-side" id="btn-ics">
+                  <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <use href="#i-calendar"></use></svg
+                  ><span>Download calendar (.ics)</span>
+                </button>
+                <button type="button" class="btn btn-side" id="btn-copy">
+                  <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <use href="#i-copy"></use></svg
+                  ><span>Copy summary</span>
+                </button>
+                <button type="button" class="btn btn-side" id="btn-print">
+                  <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <use href="#i-print"></use></svg
+                  ><span>Print / save PDF</span>
+                </button>
+                <button type="button" class="btn btn-side" id="btn-edit">
+                  <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <use href="#i-edit"></use></svg
+                  ><span>Edit details</span>
+                </button>
+              </div>
+            </aside>
+
+            <div class="dash-main">
+              <header class="dash-head">
+                <div>
+                  <p class="eyebrow" id="results-meta"></p>
+                  <h2 id="results-title" tabindex="-1"></h2>
+                  <p id="results-summary" class="lede"></p>
+                </div>
+                <div class="dash-head-side">
+                  <p id="results-source" class="badge"></p>
+                  <p class="countdown" id="countdown" aria-live="off"></p>
+                </div>
+              </header>
+
+              <div role="tabpanel" id="panel-overview" aria-labelledby="tab-overview" tabindex="0"></div>
+              <div role="tabpanel" id="panel-ideas" aria-labelledby="tab-ideas" tabindex="0" hidden></div>
+              <div role="tabpanel" id="panel-budget" aria-labelledby="tab-budget" tabindex="0" hidden></div>
+              <div
+                role="tabpanel"
+                id="panel-timeline"
+                aria-labelledby="tab-timeline"
+                tabindex="0"
+                hidden
+              ></div>
+              <div role="tabpanel" id="panel-vendors" aria-labelledby="tab-vendors" tabindex="0" hidden></div>
+              <div role="tabpanel" id="panel-assistant" aria-labelledby="tab-assistant" tabindex="0" hidden>
+                <div class="panel-card chat-card">
+                  <p class="hint">
+                    Ask anything about this plan. Answers use your budget, dates and vendors.
+                  </p>
+                  <div
+                    id="chat-log"
+                    class="chat-log"
+                    role="log"
+                    aria-live="polite"
+                    aria-label="Conversation with Utsav"
+                  ></div>
+                  <div
+                    id="chat-suggestions"
+                    class="chips"
+                    role="group"
+                    aria-label="Suggested questions"
+                  ></div>
+                  <form id="chat-form" class="chat-form">
+                    <label for="chat-input" class="visually-hidden">Your question</label>
+                    <input
+                      id="chat-input"
+                      name="question"
+                      type="text"
+                      maxlength="400"
+                      autocomplete="off"
+                      placeholder="e.g. How can I cut 20% without losing the vibe?"
+                      required
+                    />
+                    <button type="submit" class="btn btn-primary" id="chat-send">Ask</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
       </div>
-    </section>
 
-    </div>
+      <div id="announcer" class="visually-hidden" role="status" aria-live="polite"></div>
+    </main>
 
-    <div id="announcer" class="visually-hidden" role="status" aria-live="polite"></div>
-  </main>
-
-  <footer class="site-footer">
-    <div class="wrap">
-      <p>Utsav AI · Built with Google Gemini for PromptWars Virtual. Amounts are planning estimates. Always confirm quotes with vendors.</p>
-      <p>Photography from <a href="https://unsplash.com/?utm_source=utsav_ai&amp;utm_medium=referral">Unsplash</a> under the Unsplash License.</p>
-    </div>
-  </footer>
-</body>
+    <footer class="site-footer">
+      <div class="wrap">
+        <p>
+          Utsav AI · Built with Google Gemini for PromptWars Virtual. Amounts are planning estimates. Always
+          confirm quotes with vendors.
+        </p>
+        <p>
+          Photography from
+          <a href="https://unsplash.com/?utm_source=utsav_ai&amp;utm_medium=referral">Unsplash</a> under the
+          Unsplash License.
+        </p>
+      </div>
+    </footer>
+  </body>
 </html>

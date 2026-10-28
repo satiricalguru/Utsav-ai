@@ -57,7 +57,12 @@ export function donut(slices, label, text = {}) {
     root.append(c);
   });
   if (text.center) {
-    const t = svg('text', { x: 21, y: text.sub ? 20.5 : 22.5, class: 'donut-center', 'text-anchor': 'middle' });
+    const t = svg('text', {
+      x: 21,
+      y: text.sub ? 20.5 : 22.5,
+      class: 'donut-center',
+      'text-anchor': 'middle',
+    });
     t.textContent = text.center;
     root.append(t);
   }

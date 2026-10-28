@@ -1,0 +1,4 @@
+docs/media
+public/assets
+coverage
+package-lock.json

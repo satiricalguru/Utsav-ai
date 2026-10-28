@@ -2,22 +2,35 @@ import { BUDGET_CATEGORIES, CURRENCIES } from '../constants.js';
 
 /**
  * Baseline share of the total budget (in percent) for each category, per event
- * type. Every row sums to 100. Figures are typical planning splits, used as a
- * starting point that the style and venue adjustments below then reshape.
- * @type {Record<string, Record<string, number>>}
+ * type. Columns follow BUDGET_CATEGORIES (venue, catering, decor, attire,
+ * photography, entertainment, stationery, favors, logistics, contingency) and
+ * every row sums to 100. The style and venue adjustments below reshape them.
+ * @type {Record<string, number[]>}
  */
-const BASE_SPLITS = {
-  wedding:      { venue: 18, catering: 30, decor: 12, attire: 10, photography: 9, entertainment: 5, stationery: 2, favors: 3, logistics: 3, contingency: 8 },
-  engagement:   { venue: 18, catering: 32, decor: 12, attire: 8,  photography: 8, entertainment: 6, stationery: 2, favors: 3, logistics: 3, contingency: 8 },
-  birthday:     { venue: 15, catering: 35, decor: 14, attire: 2,  photography: 6, entertainment: 12, stationery: 2, favors: 4, logistics: 2, contingency: 8 },
-  anniversary:  { venue: 20, catering: 35, decor: 12, attire: 4,  photography: 8, entertainment: 7, stationery: 2, favors: 3, logistics: 2, contingency: 7 },
-  baby_shower:  { venue: 12, catering: 35, decor: 18, attire: 2,  photography: 6, entertainment: 8, stationery: 3, favors: 6, logistics: 2, contingency: 8 },
-  housewarming: { venue: 0,  catering: 45, decor: 15, attire: 2,  photography: 5, entertainment: 8, stationery: 2, favors: 6, logistics: 7, contingency: 10 },
-  community:    { venue: 20, catering: 28, decor: 10, attire: 0,  photography: 5, entertainment: 14, stationery: 5, favors: 3, logistics: 5, contingency: 10 },
-  festival:     { venue: 15, catering: 30, decor: 18, attire: 4,  photography: 5, entertainment: 12, stationery: 2, favors: 3, logistics: 3, contingency: 8 },
+const SPLIT_ROWS = {
+  wedding: [18, 30, 12, 10, 9, 5, 2, 3, 3, 8],
+  engagement: [18, 32, 12, 8, 8, 6, 2, 3, 3, 8],
+  birthday: [15, 35, 14, 2, 6, 12, 2, 4, 2, 8],
+  anniversary: [20, 35, 12, 4, 8, 7, 2, 3, 2, 7],
+  baby_shower: [12, 35, 18, 2, 6, 8, 3, 6, 2, 8],
+  housewarming: [0, 45, 15, 2, 5, 8, 2, 6, 7, 10],
+  community: [20, 28, 10, 0, 5, 14, 5, 3, 5, 10],
+  festival: [15, 30, 18, 4, 5, 12, 2, 3, 3, 8],
 };
 
-/** Multipliers applied to a category's share for each style. */
+/**
+ * @param {string} eventType
+ * @returns {Record<string, number>}
+ */
+function baseSplit(eventType) {
+  const row = SPLIT_ROWS[eventType] ?? SPLIT_ROWS.birthday;
+  return Object.fromEntries(BUDGET_CATEGORIES.map((category, i) => [category, row[i]]));
+}
+
+/**
+ * Multipliers applied to a category's share for each style.
+ * @type {Record<string, Record<string, number>>}
+ */
 const STYLE_WEIGHTS = {
   traditional: { decor: 1.1, attire: 1.15 },
   modern: {},
@@ -103,7 +116,7 @@ export function assessFeasibility(cateringAmount, guests, plateFloor) {
  */
 export function buildBudget(input) {
   const { eventType, style, venueType, budget, guests, currency } = input;
-  const base = { ...BASE_SPLITS[eventType] };
+  const base = baseSplit(eventType);
 
   // Hosting at home frees most of the venue spend for food and decor.
   if (venueType === 'home' && base.venue > 0) {
@@ -133,7 +146,10 @@ export function buildBudget(input) {
   /** @type {string[]} */
   const warnings = [];
   if (feasibility.level === 'unrealistic') {
-    warnings.push('The catering share works out below a realistic per-plate cost. Consider fewer guests, a potluck or a snacks-only menu.');
+    warnings.push(
+      'The catering share works out below a realistic per-plate cost. ' +
+        'Consider fewer guests, a potluck or a snacks-only menu.',
+    );
   } else if (feasibility.level === 'tight') {
     warnings.push('The budget per guest is tight. Prioritise food and venue, and keep decor simple.');
   }

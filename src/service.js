@@ -15,11 +15,7 @@ import { todayIso } from './dates.js';
 import { buildBasePlan, summarisePlan } from './planner/index.js';
 import { buildTimeline } from './planner/timeline.js';
 
-/**
- * @typedef {object} AiClient
- * @property {string} model
- * @property {(req: { system: string, prompt: string, schema: object, temperature?: number, history?: {role: string, text: string}[] }) => Promise<unknown>} generateJson
- */
+/** @typedef {import('../types/plan.js').AiClient} AiClient */
 
 /**
  * @typedef {object} Logger
@@ -30,7 +26,12 @@ import { buildTimeline } from './planner/timeline.js';
  * Orchestrates the deterministic planner and the Gemini layer.
  * @param {{ ai: AiClient | null, logger?: Logger, now?: () => number, cache?: TtlCache }} deps
  */
-export function createPlannerService({ ai, logger = console, now = Date.now, cache = new TtlCache({ now }) }) {
+export function createPlannerService({
+  ai,
+  logger = console,
+  now = Date.now,
+  cache = new TtlCache({ now }),
+}) {
   /**
    * @param {import('./validation.js').EventInput} input
    */
@@ -83,13 +84,15 @@ export function createPlannerService({ ai, logger = console, now = Date.now, cac
   }
 
   /**
-   * @param {{ event: import('./validation.js').EventInput, question: string, history: {role: 'user' | 'assistant', text: string}[] }} req
+   * @param {import('../types/plan.js').ChatRequest} req
    */
   async function chat({ event, question, history }) {
     if (!ai) {
       return {
         source: 'fallback',
-        answer: 'The AI assistant is not configured right now. Your budget, timeline and vendor checklist are still available in the other tabs.',
+        answer:
+          'The AI assistant is not configured right now. Your budget, timeline and vendor checklist ' +
+          'are still available in the other tabs.',
         followUps: [],
       };
     }

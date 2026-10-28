@@ -79,7 +79,9 @@ export function createGeminiClient({
       });
     } catch (err) {
       const timedOut = err instanceof Error && (err.name === 'TimeoutError' || err.name === 'AbortError');
-      throw new GeminiError(timedOut ? 'Gemini request timed out' : 'Gemini request failed', { retryable: true });
+      throw new GeminiError(timedOut ? 'Gemini request timed out' : 'Gemini request failed', {
+        retryable: true,
+      });
     }
     if (!response.ok) {
       throw new GeminiError(`Gemini returned HTTP ${response.status}`, {
@@ -92,12 +94,15 @@ export function createGeminiClient({
 
   /**
    * Generates a JSON object that conforms to `schema`.
-   * @param {{ system: string, prompt: string, schema: object, temperature?: number, history?: {role: string, text: string}[] }} request
+   * @param {import('../types/plan.js').GenerateRequest} request
    * @returns {Promise<unknown>}
    */
   async function generateJson({ system, prompt, schema, temperature = 0.8, history = [] }) {
     const contents = [
-      ...history.map((turn) => ({ role: turn.role === 'assistant' ? 'model' : 'user', parts: [{ text: turn.text }] })),
+      ...history.map((turn) => ({
+        role: turn.role === 'assistant' ? 'model' : 'user',
+        parts: [{ text: turn.text }],
+      })),
       { role: 'user', parts: [{ text: prompt }] },
     ];
     const started = now();
@@ -139,13 +144,13 @@ export function createGeminiClient({
 }
 
 /**
- * @param {any} data
+ * @param {import('../types/plan.js').GeminiResponse} data
  */
 function parseResponse(data) {
   if (data?.promptFeedback?.blockReason) {
     throw new GeminiError(`Prompt blocked: ${data.promptFeedback.blockReason}`);
   }
-  const text = data?.candidates?.[0]?.content?.parts?.map((/** @type {any} */ p) => (p.thought ? '' : p.text ?? '')).join('');
+  const text = data?.candidates?.[0]?.content?.parts?.map((p) => (p.thought ? '' : (p.text ?? ''))).join('');
   if (!text) throw new GeminiError('Gemini returned an empty response');
   try {
     return JSON.parse(text);

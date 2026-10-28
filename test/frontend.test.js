@@ -3,12 +3,35 @@ import { readFile } from 'node:fs/promises';
 import { describe, it } from 'node:test';
 import { buildIcs, escapeIcsText, foldLine, googleCalendarUrl } from '../public/js/calendar.js';
 import { donutSegments } from '../public/js/charts.js';
-import { CATEGORY_COLORS, CATEGORY_LABELS, EVENT_LABELS, daysUntil, formatDate, formatMoney, formatMoneyCompact, formatShortDate, localToday, nextTasks, planToText, relativeDays, taskStatus } from '../public/js/format.js';
-import { BUDGET_CATEGORIES, CURRENCIES, DIETARY, EVENT_TYPES, LANGUAGES, STYLES, VENUE_TYPES } from '../src/constants.js';
+import {
+  CATEGORY_COLORS,
+  CATEGORY_LABELS,
+  EVENT_LABELS,
+  daysUntil,
+  formatDate,
+  formatMoney,
+  formatMoneyCompact,
+  formatShortDate,
+  localToday,
+  nextTasks,
+  planToText,
+  relativeDays,
+  taskStatus,
+} from '../public/js/format.js';
+import {
+  BUDGET_CATEGORIES,
+  CURRENCIES,
+  DIETARY,
+  EVENT_TYPES,
+  LANGUAGES,
+  STYLES,
+  VENUE_TYPES,
+} from '../src/constants.js';
 import { createPlannerService } from '../src/service.js';
 import { TODAY, eventInput } from './helpers.js';
 
-const html = await readFile(new URL('../public/index.html', import.meta.url), 'utf8');
+// Collapse whitespace so assertions do not depend on how the markup is wrapped.
+const html = (await readFile(new URL('../public/index.html', import.meta.url), 'utf8')).replace(/\s+/g, ' ');
 
 /** @param {string} name */
 function optionValues(name) {
@@ -132,6 +155,7 @@ describe('landing page', () => {
   it('respects reduced motion in CSS and WebGL', () => {
     assert.match(css, /@media \(prefers-reduced-motion: reduce\)/);
     assert.match(css, /@media \(forced-colors: active\)/);
+    assert.match(css, /@media \(prefers-contrast: more\)/);
     assert.match(gl, /reducedMotion/);
     assert.match(gl, /IntersectionObserver/, 'pauses when off-screen');
   });
@@ -140,9 +164,15 @@ describe('landing page', () => {
 describe('dashboard helpers', () => {
   it('splits the donut into proportional, gapped segments that start where the last ended', () => {
     const segs = donutSegments([50, 30, 20]);
-    assert.deepEqual(segs.map((x) => x.offset), [-0, -50, -80]);
+    assert.deepEqual(
+      segs.map((x) => x.offset),
+      [-0, -50, -80],
+    );
     assert.ok(Math.abs(segs[0].length - 49.4) < 1e-9);
-    assert.deepEqual(donutSegments([0, 0]), [{ length: 0, offset: 0 }, { length: 0, offset: 0 }]);
+    assert.deepEqual(donutSegments([0, 0]), [
+      { length: 0, offset: 0 },
+      { length: 0, offset: 0 },
+    ]);
     assert.equal(donutSegments([1, 1000])[0].length, 100 / 1001, 'tiny slices skip the gap');
   });
 
@@ -166,8 +196,15 @@ describe('dashboard helpers', () => {
   });
 
   it('picks the most pressing open tasks', () => {
-    const ms = [{ id: 'a', due: '2026-12-01' }, { id: 'b', due: '2026-11-01' }, { id: 'c', due: '2026-10-25' }];
-    assert.deepEqual(nextTasks(ms, { 'task:c': true }, 5).map((m) => m.id), ['b', 'a']);
+    const ms = [
+      { id: 'a', due: '2026-12-01' },
+      { id: 'b', due: '2026-11-01' },
+      { id: 'c', due: '2026-10-25' },
+    ];
+    assert.deepEqual(
+      nextTasks(ms, { 'task:c': true }, 5).map((m) => m.id),
+      ['b', 'a'],
+    );
     assert.equal(nextTasks(ms, {}, 1)[0].id, 'c');
   });
 
@@ -177,7 +214,14 @@ describe('dashboard helpers', () => {
 
   it('exposes an Overview tab first and defines every referenced icon', () => {
     const tabs = [...html.matchAll(/role="tab" id="([^"]+)"/g)].map((m) => m[1]);
-    assert.deepEqual(tabs, ['tab-overview', 'tab-ideas', 'tab-budget', 'tab-timeline', 'tab-vendors', 'tab-assistant']);
+    assert.deepEqual(tabs, [
+      'tab-overview',
+      'tab-ideas',
+      'tab-budget',
+      'tab-timeline',
+      'tab-vendors',
+      'tab-assistant',
+    ]);
     const defined = new Set([...html.matchAll(/<symbol id="i-([^"]+)"/g)].map((m) => m[1]));
     for (const [, name] of html.matchAll(/href="#i-([^"]+)"/g)) assert.ok(defined.has(name), name);
   });

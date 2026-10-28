@@ -28,7 +28,10 @@ export const DIETARY = Object.freeze([
   'non_vegetarian',
 ]);
 
-/** Language codes the AI can answer in, with their text direction. */
+/**
+ * Language codes the AI can answer in, with their text direction.
+ * @type {Readonly<Record<string, { name: string, dir: 'ltr' | 'rtl' }>>}
+ */
 export const LANGUAGES = Object.freeze({
   en: { name: 'English', dir: 'ltr' },
   hi: { name: 'Hindi', dir: 'ltr' },
@@ -50,6 +53,7 @@ export const LANGUAGES = Object.freeze({
  * Supported currencies. `plateFloor` is a rough minimum cost of one catered
  * plate, used only to flag budgets that are unrealistic per guest.
  * `step` is the rounding unit for allocated amounts.
+ * @type {Readonly<Record<string, { symbol: string, plateFloor: number, step: number }>>}
  */
 export const CURRENCIES = Object.freeze({
   INR: { symbol: '₹', plateFloor: 350, step: 100 },
