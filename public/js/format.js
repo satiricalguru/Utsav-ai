@@ -115,6 +115,7 @@ export function formatMoney(amount, currency) {
     fmt = new Intl.NumberFormat(currency === 'INR' ? 'en-IN' : 'en', {
       style: 'currency',
       currency,
+      minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     });
     moneyFormatters.set(currency, fmt);
@@ -136,6 +137,7 @@ export function formatMoneyCompact(amount, currency) {
       style: 'currency',
       currency,
       notation: 'compact',
+      minimumFractionDigits: 0,
       maximumFractionDigits: 1,
     });
     compactFormatters.set(currency, fmt);
